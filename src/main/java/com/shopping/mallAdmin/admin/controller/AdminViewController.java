@@ -1,8 +1,14 @@
 package com.shopping.mallAdmin.admin.controller;
 
+import com.shopping.mallAdmin.admin.service.AdminService;
+import com.shopping.mallAdmin.configuration.PasswordUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,73 +17,28 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AdminViewController {
 
+    @Autowired
+    AdminService adminService;
+
     @GetMapping("/")
     public String admin(HttpServletRequest request){
-        HttpSession session = request.getSession();
 
-        if(session.getAttribute("adminLoginCheck")!=null && session.getAttribute("adminId")!=null && session.getAttribute("adminPw")!=null){
-            if(session.getAttribute("adminLoginCheck").equals("success")){
-                return "admin/admin.html";
-            }
-        }
-
-        return "admin/adminLogin.html";
+        return "login/login.html";
     }
 
-    @GetMapping("/admin/adminProduct")
-    public String adminProduct(HttpServletRequest request){
+    @PostMapping("/loginProc")
+    public String loginProc(@RequestParam String userId, @RequestParam String password, @RequestParam(required = false) boolean rememberMe, Model model, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
+        String encryptedPassword = PasswordUtil.sha256(password); // 패스워드 암호화
 
-        if(session.getAttribute("adminLoginCheck")!=null && session.getAttribute("adminId")!=null && session.getAttribute("adminPw")!=null){
-            if(session.getAttribute("adminLoginCheck").equals("success")){
-                return "admin/control/adminProduct.html";
-            }
+        boolean loginCheck = adminService.loginCheck(userId, encryptedPassword);
+
+        request.getSession().setAttribute("adminLoginCheck", loginCheck);
+
+        if(loginCheck){
+            return "admin/admin.html";
+        }else {
+            return "/";
         }
-
-        return "admin/control/adminLogin.html";
     }
-
-    @GetMapping("/admin/adminBoard")
-    public String adminBoard(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-
-        if(session.getAttribute("adminLoginCheck")!=null && session.getAttribute("adminId")!=null && session.getAttribute("adminPw")!=null){
-            if(session.getAttribute("adminLoginCheck").equals("success")){
-                return "admin/control/adminBoard.html";
-            }
-        }
-
-        return "admin/control/adminLogin.html";
-    }
-
-    @GetMapping("/admin/adminUser")
-    public String adminUser(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-
-        if(session.getAttribute("adminLoginCheck")!=null && session.getAttribute("adminId")!=null && session.getAttribute("adminPw")!=null){
-            if(session.getAttribute("adminLoginCheck").equals("success")){
-                return "admin/control/adminGetUser.html";
-            }
-        }
-
-        return "admin/control/adminLogin.html";
-    }
-
-    @GetMapping("/admin/adminDesign")
-    public String adminDesign(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-
-        if(session.getAttribute("adminLoginCheck")!=null && session.getAttribute("adminId")!=null && session.getAttribute("adminPw")!=null){
-            if(session.getAttribute("adminLoginCheck").equals("success")){
-                return "admin/control/adminDesign.html";
-            }
-        }
-
-        return "admin/adminDesign.html";
-    }
-
 }

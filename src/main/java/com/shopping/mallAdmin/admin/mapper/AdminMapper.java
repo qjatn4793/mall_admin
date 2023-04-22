@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface AdminMapper {
 
+    AdminVo selectAdminById(String adminId);
+
     int adminLoginCheck(AdminVo adminVo);
 
     String adminSelectOne(String adminId);

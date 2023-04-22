@@ -1,11 +1,12 @@
 package com.shopping.mallAdmin.admin.controller;
 
 import com.shopping.mallAdmin.admin.service.AdminService;
-import com.shopping.mallAdmin.admin.vo.AdminVo;
-import com.shopping.mallAdmin.configuration.SHA256;
+import com.shopping.mallAdmin.configuration.PasswordUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,65 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-
-import static java.lang.String.valueOf;
-
 
 @AllArgsConstructor
 @ResponseBody
 @RestController
 public class AdminController {
 
-    /*github test*/
-
-    /*@GetMapping("/admin/viewProduct")
-    public String viewProduct(ProductVo productVo){
-
-        return null;
-    }*/
-
+    @Autowired
     AdminService adminService;
-
-
-    @PostMapping("/admin") //관리자 로그인
-    public int adminLoginCheck(@RequestBody AdminVo adminVo, HttpServletRequest request)throws NoSuchAlgorithmException {
-        SHA256 sha256 = new SHA256();
-
-        int adminLoginCheck = adminService.adminLoginCheck(adminVo);
-        String adminPw = adminService.adminSelectOne(adminVo.getAdminId());
-        String encryptAdminPw = "";
-
-        // nullpointexception 처리
-        try{
-            encryptAdminPw = sha256.encrypt(adminPw);
-        }catch (NullPointerException e) {
-            adminLoginCheck = 0;
-            return adminLoginCheck;
-        }
-
-        HttpSession session = request.getSession();
-
-        if(encryptAdminPw.equals(sha256.encrypt(adminVo.getAdminPw()))) {
-            if (adminLoginCheck == 1) {
-                session.setAttribute("adminLoginCheck", "success");
-                session.setAttribute("adminId", adminVo.getAdminId());
-                session.setAttribute("adminPw", sha256.encrypt(adminVo.getAdminPw()));
-
-                System.out.println("관리자 로그인");
-
-                return adminLoginCheck;
-            } else {
-                adminLoginCheck = 0;
-                return adminLoginCheck;
-            }
-        }else {
-            adminLoginCheck = 0;
-            return adminLoginCheck;
-        }
-    }
-
 
     @DeleteMapping("/admin")
     public String logout(HttpServletRequest request){
