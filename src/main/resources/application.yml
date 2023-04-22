@@ -1,0 +1,28 @@
+server :
+  port : 81
+
+spring :
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mall_db?serverTimezone=UTC&characterEncoding=UTF-8
+
+    username: root
+    password: securus1234
+
+  devtools:
+    livereload:
+      enabled: true
+    remote:
+      restart:
+        enabled: true
+
+  freemarker:
+    cache: false
+
+  thymeleaf:
+    cache: false
+
+  mybatis:
+    config-location: classpath:mybatis-config.xml
+    configuration:
+      map-underscore-to-camel-case: true

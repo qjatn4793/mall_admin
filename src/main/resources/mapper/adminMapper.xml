@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shopping.mallAdmin.admin.mapper.AdminMapper">
+    <select id="adminLoginCheck" parameterType="com.shopping.mallAdmin.admin.vo.AdminVo" resultType="Integer">
+        SELECT COUNT(*) FROM admin_user
+        WHERE admin_id = #{adminId}
+        AND admin_pw = #{adminPw}
+        AND status = 1
+    </select>
+
+    <select id="adminSelectOne" parameterType="String" resultType="String">
+        SELECT admin_pw FROM admin_user WHERE admin_id = #{adminId}
+    </select>
+
+    <select id="adminGetUserCount" resultType="integer">
+        SELECT ifnull(max(user_seq),0) data FROM user
+    </select>
+
+    <delete id="adminUserDelete" parameterType="integer">
+        DELETE FROM user WHERE user_seq=#{userSeq}
+    </delete>
+
+</mapper>
