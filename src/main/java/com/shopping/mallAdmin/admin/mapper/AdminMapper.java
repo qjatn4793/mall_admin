@@ -10,10 +10,4 @@ public interface AdminMapper {
 
     AdminVo selectAdminById(String adminId);
 
-    int adminLoginCheck(AdminVo adminVo);
-
-    String adminSelectOne(String adminId);
-
-    int adminGetUserCount();
-
 }

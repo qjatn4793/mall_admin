@@ -26,14 +26,4 @@ public class AdminService {
         return false; // 로그인 실패
     }
 
-    public int adminLoginCheck(AdminVo adminVo){
-
-        return adminMapper.adminLoginCheck(adminVo);
-    }
-
-    public String adminSelectOne(String adminId){
-
-        return adminMapper.adminSelectOne(adminId);
-    }
-
 }
