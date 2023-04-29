@@ -17,17 +17,13 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean loginCheck =false;
 
-        HttpSession session = request.getSession();
-        if(!StringUtils.isEmpty(session.getAttribute("adminLoginCheck"))){
-            if(session.getAttribute("adminLoginCheck").equals("true")){
-                loginCheck = true;
-            }else{
-                response.sendRedirect("/");
-                session.invalidate();
-            }
-        }else{
+        Boolean adminLoginCheck = (Boolean) request.getSession().getAttribute("adminLoginCheck");
+
+        if (adminLoginCheck != null && adminLoginCheck) {
+            loginCheck = true;
+        }else {
+            request.getSession().invalidate();
             response.sendRedirect("/");
-            session.invalidate();
         }
 
         return loginCheck;

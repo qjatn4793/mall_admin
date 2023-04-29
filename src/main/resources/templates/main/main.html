@@ -1,0 +1,353 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/head :: headFragment"></th:block>
+</head>
+<style>
+    .traffic-chart {
+        min-height: 335px;
+    }
+
+    #flotPie1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    #flotPie1 td {
+        padding:3px;
+    }
+    #flotPie1 table {
+        top: 20px!important;
+        right: -10px!important;
+    }
+
+</style>
+<body>
+    <!-- Left Panel -->
+    <th:block th:replace="common/nav :: navFragment"></th:block>
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+        <!-- Header-->
+        <th:block th:replace="common/header :: headerFragment"></th:block>
+        <!-- /#header -->
+        <!-- Content -->
+        <div class="content">
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!--  Traffic  -->
+                <div class="row">
+                    <div class="col-lg-12" style="max-width: 70%">
+                        <div class="card" style="height:100%;">
+                            <div class="card-body">
+                                <h4 class="box-title">Traffic </h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card-body">
+                                        <!-- <canvas id="TrafficChart"></canvas>   -->
+                                        <div id="traffic-chart" class="traffic-chart"></div>
+                                    </div>
+                                </div>
+                            </div> <!-- /.row -->
+                            <div class="card-body"></div>
+                        </div>
+                    </div><!-- /# column -->
+
+                    <div class="col-lg-12" style="max-width: 30%">
+                        <div class="card" style="height:100%;">
+                            <div class="card-body">
+                                <h4 class="box-title">Traffic statistics</h4>
+                                <div class="col-lg-6 col-xl-12">
+                                    <div class="card br-0">
+                                        <div class="card-body">
+                                            <div class="chart-container ov-h">
+                                                <div id="flotPie1" class="float-chart"></div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.card -->
+                                </div>
+
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: 80%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-flat-color-1" role="progressbar" style="width: 70%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-flat-color-4" role="progressbar" style="width: 10%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div> <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+                <!--  /Traffic -->
+            </div>
+            <!-- .animated -->
+            <br>
+
+            <!--제일 하단 컨텐츠 시작-->
+            <div class="row">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-4">
+                        <a href="/monitoring/detection" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <!--<span class="currency float-left mr-1">$</span>-->
+                                        <span class="count float-left">23</span>
+                                        <span>건</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">해킹 탐지 내역</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<i class="icon fade-5 icon-lg pe-7s-cart"></i>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-5">
+                        <a href="/monitoring/serverMonitor" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span class="count float-left">85</span>
+                                        <span>건</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">비정상 트래픽</p>
+                                </div><!-- /.card-left -->
+
+                                <div class="card-right float-right text-right">
+                                    <!--<div id="flotBar1" class="flotBar1"></div>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-7">
+                        <a href="/monitoring/serviceMonitor" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span class="count float-left">1</span>
+                                        <span>건</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">비정상 종료 및 재기동</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<i class="icon fade-5 icon-lg pe-7s-users"></i>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-8">
+                        <a href="/setting/user_setting" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span class="count float-left">9</span>
+                                        <span>건</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">로그인 실패</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<div id="flotLine1" class="flotLine1"></div>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+            </div>
+            <!--제일 하단 컨텐츠 끝-->
+
+            <!--제일 하단 컨텐츠 시작-->
+            <div class="row">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-1">
+                        <a href="/monitoring/serverMonitor" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <!--<span class="currency float-left mr-1">$</span>-->
+                                        <span class="count float-left">27</span>
+                                        <span>%</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">힙 메모리 사용량</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<i class="icon fade-5 icon-lg pe-7s-cart"></i>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-6">
+                        <a href="/monitoring/serverMonitor" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span class="count float-left">56</span>
+                                        <span>%</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">CPU 사용량</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<div id="flotBar1" class="flotBar1"></div>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-3">
+                        <a href="/monitoring/serviceMonitor" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="card-left pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span>정상</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">정상 작동 여부</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<i class="icon fade-5 icon-lg pe-7s-users"></i>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card text-white bg-flat-color-2">
+                        <a href="/manager/license_manager" style="color: #ffffff;">
+                            <div class="card-body">
+                                <div class="pt-1 float-left">
+                                    <h3 class="mb-0 fw-r">
+                                        <span class="count">2023</span>
+                                        <span>년</span>
+                                        <span class="count">12</span>
+                                        <span>월</span>
+                                        <span class="count">31</span>
+                                        <span>일</span>
+                                    </h3>
+                                    <p class="text-light mt-1 m-0">License 만료일</p>
+                                </div><!-- /.card-left -->
+                                <div class="card-right float-right text-right">
+                                    <!--<div id="flotLine1" class="flotLine1"></div>-->
+                                </div><!-- /.card-right -->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--/.col-->
+            </div>
+            <!--제일 하단 컨텐츠 끝-->
+        </div>
+
+        <!-- /.content -->
+        <div class="clearfix"></div>
+        <!-- Footer -->
+        <th:block th:replace="common/footer :: footerFragment"></th:block>
+         <!--/.site-footer -->
+    </div>
+
+    <!--  Chart js -->
+    <script src="/common/js/Chart.bundle.min.js"></script>
+
+    <!--Chartist Chart-->
+    <script src="/common/js/chartist.min.js"></script>
+    <script src="/common/js/chartist-plugin-legend.min.js"></script>
+    <script src="/common/js/jquery.flot.min.js"></script>
+    <script src="/common/js/jquery.flot.pie.min.js"></script>
+    <script src="/common/js/jquery.flot.spline.min.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            "use strict";
+
+            // Pie chart flotPie1
+            var piedata = [
+                { label: "Inbound", data: [1, 52], color: '#5c6bc0'},
+                { label: "Outbound", data: [1, 38], color: '#66bb6a'},
+                { label: "Caution", data: [1, 12], color: '#ef5350'}
+            ];
+
+            $.plot('#flotPie1', piedata, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        innerRadius: 0.65,
+                        label: {
+                            show: true,
+                            radius: 2/3,
+                            threshold: 1
+                        },
+                        stroke: {
+                            width: 0
+                        }
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                },
+                width: 1500,
+                height: 1500
+            });
+            // Traffic Chart using chartist
+            if ($('#traffic-chart').length) {
+                var chart = new Chartist.Line('#traffic-chart', {
+                  labels: ["월", "화", "수", "목", "금", "토", "일"],
+                  series: [
+                      [0, 18000, 35000,  25000,  22000,  12000, 1200],
+                      [0, 33000, 15000,  20000,  15000,  22300, 1100],
+                      [0, 15000, 28000,  15000,  30000,  5000, 9000]
+                  ]
+              }, {
+                  low: 0,
+                  showArea: true,
+                  showLine: false,
+                  showPoint: false,
+                  fullWidth: true,
+                  axisX: {
+                    showGrid: true
+                }
+            });
+
+                chart.on('draw', function(data) {
+                    if(data.type === 'line' || data.type === 'area') {
+                        data.element.animate({
+                            d: {
+                                begin: 2000 * data.index,
+                                dur: 2000,
+                                from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                                to: data.path.clone().stringify(),
+                                easing: Chartist.Svg.Easing.easeOutQuint
+                            }
+                        });
+                    }
+                });
+            }
+            // Traffic Chart using chartist End
+        });
+
+    </script>
+</body>
+</html>

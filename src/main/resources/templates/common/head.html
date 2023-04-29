@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="headFragment">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>WebSiteOne Monitor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/common/img/favicon.png">
+
+        <!--공통 css-->
+        <link rel="stylesheet" href="/common/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/common/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/common/css/flag-icon.min.css">
+        <link rel="stylesheet" href="/common/css/style.css">
+        <link rel="stylesheet" href="/common/css/chartist.min.css">
+
+        <!--공통 js-->
+        <script src="/common/js/jquery.min.js"></script>
+        <script src="/common/js/popper.min.js"></script>
+        <script src="/common/js/bootstrap.min.js"></script>
+        <script src="/common/js/jquery.matchHeight.min.js"></script>
+        <script src="/common/js/main.js"></script>
+        <script>
+            jQuery(document).ready(function($) {
+                $("#logoutClick").click(function () {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/admin",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data == 1) {
+                                window.location.replace("/");
+                                alert("Logout Successful");
+                            } else {
+                                alert("Unexpected Response");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            // handle the error
+                            console.error("jqXHR:", jqXHR);
+                            console.error("textStatus:", textStatus);
+                            console.error("errorThrown:", errorThrown);
+                        }
+                    });
+                });
+
+                /*현재 url 에 따른 active 클래스 추가*/
+                var currentPath = window.location.pathname;
+                var pathSplit = currentPath.split('/');
+                var prefix = pathSplit.pop();
+                var suffix = pathSplit.pop().split('/')[0];
+
+                if (suffix === 'main') {
+                    $('#main').addClass('active');
+                }else if (suffix === 'monitoring') {
+                    $('#monitoring').addClass('active');
+                }else if (suffix === 'manager') {
+                    if(prefix === 'user_manager.do' || prefix === 'admin_manager.do') {
+                        $('#user_manager').addClass('active');
+                    }else if (prefix === 'solution_manager.do' || prefix === 'license_manager.do') {
+                        $('#solution_manager').addClass('active');
+                    }
+                }else if (suffix === 'setting') {
+                    $('#setting').addClass('active');
+                }
+
+                /*document.body.classList.add('open');*/
+            });
+        </script>
+    </th:block>
+</html>
