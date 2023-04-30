@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ManagerVo {
 
-    /*main_contents*/
-    int mainSeq;
-    String mainTitle;
-    String mainRegDate;
-    int mainViews;
-    String mainContents;
+    /*product_contents*/
+    int productSeq;
+    String productTitle;
+    String productRegDate;
+    int productViews;
+    String productContents;
     String thumbContents;
 }

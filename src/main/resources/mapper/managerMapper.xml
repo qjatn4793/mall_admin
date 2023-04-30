@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shopping.mallAdmin.manager.mapper.ManagerMapper">
+    <resultMap id="managerResultMap" type="com.shopping.mallAdmin.manager.vo.ManagerVo">
+        <id property="productSeq" column="product_seq"/>
+        <result property="productTitle" column="product_title"/>
+        <result property="productRegDate" column="product_regDate"/>
+        <result property="productViews" column="product_views"/>
+        <result property="productContents" column="product_contents"/>
+        <result property="thumbContents" column="thumb_contents"/>
+    </resultMap>
+
+    <select id="getProductList" resultMap="managerResultMap">
+      SELECT * FROM product_contents
+      LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+      SELECT COUNT(*) FROM product_contents
+    </select>
+
+    <select id="getProductDetail" parameterType="int" resultMap="managerResultMap">
+      SELECT * FROM product_contents
+      WHERE product_seq = #{productSeq}
+    </select>
+
+</mapper>

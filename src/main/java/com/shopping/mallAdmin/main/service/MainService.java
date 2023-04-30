@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Transactional
-@Service("adminService")
+@Service("mainService")
 public class MainService {
 
     @Autowired
-    private MainMapper adminMapper;
+    private MainMapper mainMapper;
 
     public boolean loginCheck(String adminId, String encryptedPassword) {
-        MainVo adminVo = adminMapper.selectAdminById(adminId);
+        MainVo adminVo = mainMapper.selectAdminById(adminId);
         if (adminVo != null) {
             String dbPassword = adminVo.getAdminPw();
             if (encryptedPassword.equals(dbPassword)) {

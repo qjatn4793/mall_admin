@@ -2577,3 +2577,39 @@ footer.site-footer {
     left: inherit !important;
     right: 20px !important; }
 
+/*페이징 처리 디자인*/
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination ul {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  display: flex;
+  margin-right: 5px;
+}
+
+.pagination li:last-child {
+  margin-right: 0;
+}
+
+.pagination a {
+  color: #000;
+  padding: 3px 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.pagination a:hover {
+  background-color: #ddd;
+}
