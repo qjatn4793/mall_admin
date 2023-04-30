@@ -10,12 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ManagerVo {
-
     /*product_contents*/
-    int productSeq;
-    String productTitle;
-    String productRegDate;
-    int productViews;
-    String productContents;
-    String thumbContents;
+    private int productSeq;
+    private String productTitle;
+    private String productRegDate;
+    private int productViews;
+    private String productContents;
+    private String thumbContents;
+    private int productStatus;
+
+    /*category_contents*/
+    private int categorySeq;
+    private String categoryName;
 }

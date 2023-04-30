@@ -27,14 +27,17 @@
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">카테고리 관리</strong>
+                            <a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button add-category-button" data-toggle="modal" data-target="#add-category-modal">카테고리 추가</a>
                         </div>
                         <div class="card-body">
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
-                            <button type="button" class="btn btn-outline-primary btn-lg btn-block">Block level button</button>
+                            <div class="row mb-2" th:each="category : ${categoryList}">
+                                <div class="col-lg-8">
+                                    <a class="btn btn-outline-primary btn-lg btn-block active" th:href="@{/manager/product_manager(categorySeq=${category.categorySeq})}" th:text="${category.categoryName}"></a>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button type="button" class="btn btn-outline-danger btn-lg btn-block delete-category-button" th:onclick="deleteCategory([[${category.categorySeq}]]);">삭제</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,6 +45,7 @@
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">상품 관리</strong>
+                            <a href="#" style="float: right;" class="btn btn-secondary btn-sm insert-image-button add-product-button" data-toggle="modal" data-target="#add-product-modal">상품 추가</a>
                         </div>
 
 
@@ -66,15 +70,22 @@
                                         <td class="avatar">
                                             <div class="round-img">
                                                 <!--<a href="#"><img class="rounded-circle" th:src="${product.thumbContents}" alt=""></a>-->
-                                                <a th:href="@{/manager/product_detail(productSeq=${product.productSeq})}"><img th:src="${product.thumbContents}" alt=""></a>
+                                                <a th:href="@{/manager/product_detail(productSeq=${product.productSeq})}">
+                                                    <img th:if="${product.thumbContents}" th:src="${product.thumbContents}" alt="">
+                                                    <span th:unless="${product.thumbContents}">이미지 없음</span>
+                                                </a>
                                             </div>
                                         </td>
-                                        <td th:text="${product.productTitle}"></td>
-                                        <td>카테고리</td>
+                                        <!--<td th:text="${product.productTitle}"></td>-->
+                                        <td>
+                                            <a th:text="${product.productTitle}" th:href="@{/manager/product_detail(productSeq=${product.productSeq})}"></a>
+                                        </td>
+                                        <td th:text="${product.categoryName}"></td>
                                         <td th:text="${product.productRegDate}"></td>
                                         <td th:text="${product.productViews}"></td>
                                         <td>
-                                            <span class="badge badge-complete">Complete</span>
+                                            <span class="badge badge-complete" th:if="${product.productStatus == 1}">사용</span>
+                                            <span class="badge badge-pending" th:if="${product.productStatus != 1}">중지</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -101,6 +112,77 @@
         </div><!-- .animated -->
     </div><!-- .content -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="add-category-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- 모달 헤더 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-category-modal-label">카테고리 추가</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- 모달 바디 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="categoryName">카테고리 이름</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName">
+                    </div>
+                </div>
+                <!-- 모달 푸터 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="add-category-submit">추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog" aria-labelledby="add-category-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- 모달 헤더 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-product-modal-label">상품 추가</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- 모달 바디 -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="productTitle">상품명</label>
+                        <input type="text" id="productTitle" class="form-control" name="productTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryId">카테고리</label>
+                        <select id="categoryId" class="form-control" name="categoryId">
+                            <option value="" selected>선택하세요</option>
+                            <th:block th:each="category : ${categoryList}">
+                                <option th:value="${category.categorySeq}" th:text="${category.categoryName}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusId">상태</label>
+                        <select id="statusId" class="form-control" name="statusId">
+                            <option value="0" th:text="선택하세요" selected></option>
+                            <option value="1" th:text="사용"></option>
+                            <option value="2" th:text="중지"></option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 모달 푸터 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="add-product-submit">추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="clearfix"></div>
 
     <!-- Footer -->
@@ -109,20 +191,111 @@
 
 </div><!-- /#right-panel -->
 <script>
+
+    /*상품 생성*/
     jQuery(document).ready(function() {
-        // 페이징 처리 버튼 클릭 시 Ajax 요청
-        jQuery('.page-link').click(function(e) {
-            e.preventDefault();
-            var pageNum = jQuery(this).data('page');
+
+        jQuery("#add-product-submit").click(function() {
+
+            const productTitle = jQuery('#productTitle').val();
+            const categoryId = jQuery('#categoryId').val();
+            const statusId = jQuery('#statusId').val();
+
+            alert(productTitle);
+            alert(categoryId);
+            alert(statusId);
+
             jQuery.ajax({
-                url: '/manager/product_manager',
-                data: { pageNum: pageNum },
-                success: function(result) {
-                    jQuery('#productTable tbody').html(result);
+                url: "/manager/product",
+                method: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({productTitle: productTitle, categorySeq: categoryId, productStatus: statusId}),
+                success: function(data) {
+                    console.log(data);
+                    if (data > 0) {
+                        alert("상품이 추가되었습니다.");
+                        location.reload();
+                    }else {
+                        alert("상품 추가에 실패했습니다.");
+                        location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert("상품 추가에 실패했습니다.");
                 }
             });
         });
+
+        // 모달이 열릴 때
+        jQuery('#add-product-modal').on('shown.bs.modal', function() {
+            // categoryName 입력 값 초기화
+            jQuery('#productTitle').val('');
+        });
     });
+
+    /*카테고리 생성*/
+    jQuery(function() {
+        // 추가 버튼 클릭 시
+        jQuery('#add-category-submit').click(function() {
+            // 입력된 categoryName 값 가져오기
+            var categoryName = jQuery('#categoryName').val();
+
+            // AJAX 요청
+            jQuery.ajax({
+                type: 'POST',
+                url: '/manager/category',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ categoryName: categoryName }),
+                success: function(data) {
+                    // AJAX 요청 성공 시 처리
+                    // 모달 닫기 등 필요한 작업 수행
+                    if(data > 0) {
+                        alert("생성 성공");
+                        location.reload();
+                    }else {
+                        alert("생성 실패");
+                        location.reload();
+                    }
+
+                    jQuery('#add-category-modal').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    // AJAX 요청 실패 시 처리
+                    alert('카테고리 추가에 실패하였습니다.');
+                }
+            });
+        });
+
+        // 모달이 열릴 때
+        jQuery('#add-category-modal').on('shown.bs.modal', function() {
+            // categoryName 입력 값 초기화
+            jQuery('#categoryName').val('');
+        });
+    });
+
+    function deleteCategory(categorySeq) {
+        jQuery.ajax({
+            url: "/manager/category",
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({categorySeq: parseInt(categorySeq)}),
+            success: function(result) {
+                // 삭제 성공 시 처리할 코드 작성
+                if (result > 0) {
+                    alert("삭제 성공");
+                    location.reload();
+                }else {
+                    alert("삭제 실패");
+                    location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                // 삭제 실패 시 처리할 코드 작성
+                alert('카테고리 삭제에 실패하였습니다.');
+            }
+        });
+    }
 </script>
 
 <!-- Right Panel -->

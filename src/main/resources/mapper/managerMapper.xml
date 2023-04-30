@@ -8,8 +8,15 @@
         <result property="productTitle" column="product_title"/>
         <result property="productRegDate" column="product_regDate"/>
         <result property="productViews" column="product_views"/>
+        <result property="productStatus" column="product_status"/>
         <result property="productContents" column="product_contents"/>
         <result property="thumbContents" column="thumb_contents"/>
+    </resultMap>
+
+    <resultMap id="categoryResultMap" type="com.shopping.mallAdmin.manager.vo.ManagerVo">
+        <id property="categorySeq" column="category_seq"/>
+        <result property="productSeq" column="product_seq"/>
+        <result property="categoryName" column="category_name"/>
     </resultMap>
 
     <select id="getProductList" resultMap="managerResultMap">
@@ -25,5 +32,35 @@
       SELECT * FROM product_contents
       WHERE product_seq = #{productSeq}
     </select>
+
+    <select id="getCategoryList" resultMap="categoryResultMap">
+      SELECT * FROM category
+    </select>
+
+    <select id="getCategoryName" resultType="string">
+      SELECT category_name FROM category
+      WHERE category_seq = #{categorySeq}
+    </select>
+
+    <insert id="createProduct" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      INSERT INTO product_contents (product_title, product_status, category_seq, product_regDate)
+      VALUES (#{productTitle}, #{productStatus}, #{categorySeq}, NOW())
+    </insert>
+
+    <delete id="deleteProduct" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      DELETE FROM product_contents WHERE product_seq = #{productSeq}
+    </delete>
+
+    <insert id="createCategory" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      INSERT INTO category (category_name) VALUES (#{categoryName})
+    </insert>
+
+    <update id="updateCategory" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      UPDATE product_contents SET category_seq=#{categorySeq}, product_title=#{productTitle}, product_status=#{productStatus} WHERE product_seq=#{productSeq};
+    </update>
+
+    <delete id="deleteCategory" parameterType="int">
+      DELETE FROM category WHERE category_seq = #{categorySeq}
+    </delete>
 
 </mapper>

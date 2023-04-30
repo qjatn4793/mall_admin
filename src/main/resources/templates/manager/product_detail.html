@@ -23,7 +23,7 @@
     <div class="content">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">상품 관리</strong>
@@ -33,29 +33,62 @@
                             <div class="row tm-mb-90 tm-gallery">
                                 <div class="col-lg-12 col-md-6 col-sm-6 col-12">
                                     <figure class="effect-ming tm-video-item">
-                                        <img th:src="@{${managerVo.thumbContents}}" alt="Image" class="img-fluid">
+                                        <div th:if="${managerVo.thumbContents}">
+                                            <img th:src="@{${managerVo.thumbContents}}" alt="Image" class="img-fluid">
+                                        </div>
+                                        <div th:unless="${managerVo.thumbContents}">
+                                            <span>등록된 이미지가 없습니다.</span>
+                                        </div>
                                     </figure>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">상품 관리</strong>
-                            <a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button">내용 변경</a>
+                            <a href="#" style="float: right;" class="btn btn-secondary btn-sm change-product-button">저장</a>
                         </div>
                         <div class="card-body">
                             <div class="row tm-mb-90 tm-gallery">
-                                <div class="col-xl-3 col-lg-12 col-md-6 col-sm-6 col-12">
-                                    상품명 : <input th:value="${managerVo.productTitle}"><br>
-                                    조회수 :<p th:text="${managerVo.productViews}"></p>
-                                    생성일 : <p th:text="${managerVo.productRegDate}"></p>
+                                <div class="col-lg-12 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="productTitle">상품명</label>
+                                        <input type="text" id="productTitle" class="form-control" name="productTitle" th:value="${managerVo.productTitle}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="categoryId">카테고리</label>
+                                        <select id="categoryId" class="form-control" name="categoryId">
+                                            <option value="">선택하세요</option>
+                                            <th:block th:each="category : ${categoryList}">
+                                                <option th:value="${category.categorySeq}" th:text="${category.categoryName}" th:selected="${managerVo.categorySeq == category.categorySeq}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productViews">조회수</label>
+                                        <p id="productViews" class="form-control-static" th:text="${managerVo.productViews}"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productRegDate">생성일</label>
+                                        <p id="productRegDate" class="form-control-static" th:text="${managerVo.productRegDate}"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="statusId">상태</label>
+                                        <select id="statusId" class="form-control" name="statusId">
+                                            <option value="0" th:text="선택하세요" th:attr="selected=${managerVo.productStatus == 0}"></option>
+                                            <option value="1" th:text="사용" th:attr="selected=${managerVo.productStatus == 1}"></option>
+                                            <option value="2" th:text="중지" th:attr="selected=${managerVo.productStatus == 2}"></option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-4">
                 </div>
             </div>
 
@@ -69,7 +102,12 @@
                             <div class="row tm-mb-90">
                                 <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
                                     <a href="#" style="width:100%;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>
-                                    <img th:src="@{${managerVo.productContents}}" alt="Image" class="img-fluid" style="width: 1920px; height: 650px;">
+                                    <div th:if="${managerVo.productContents}">
+                                        <img th:src="@{${managerVo.productContents}}" alt="Image" class="img-fluid" style="width: 1920px; height: 650px;">
+                                    </div>
+                                    <div th:unless="${managerVo.productContents}">
+                                        <span>등록된 이미지가 없습니다.</span>
+                                    </div>
                                 </div>
                                 <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
                                     <div class="tm-bg-gray tm-video-details">
@@ -93,18 +131,12 @@
                                         </div>
                                         <div>
                                             <h3 class="tm-text-gray-dark mb-3">Category</h3>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Cloud</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Bluesky</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Nature</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Background</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Timelapse</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Night</a>
-                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Real Estate</a>
+                                            <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block" th:each="category : ${categoryList}" th:text="${category.categoryName}" th:if="${managerVo.categorySeq == category.categorySeq}"></a>
                                         </div>
                                     </div>
                                     <br><br>
-                                    <button style="position: absolute; bottom: 0; right: 128px;" onclick="window.history.back()" class="btn btn-danger">상품 삭제</button>
-                                    <button style="position: absolute; bottom: 0; right: 0;" onclick="window.history.back()" class="btn btn-primary">목록으로 가기</button>
+                                    <button style="position: absolute; bottom: 0; right: 128px;" class="btn btn-danger" th:onclick="deleteProduct([[${managerVo.productSeq}]]);">상품 삭제</button>
+                                    <button style="position: absolute; bottom: 0; right: 0;" onclick="location.href='/manager/product_manager'" class="btn btn-primary">목록으로 가기</button>
                                 </div>
                             </div>
                         </div>
@@ -122,18 +154,62 @@
 
 </div><!-- /#right-panel -->
 <script>
-    jQuery(document).ready(function() {
-        // 페이징 처리 버튼 클릭 시 Ajax 요청
-        jQuery('.page-link').click(function(e) {
-            e.preventDefault();
-            var pageNum = jQuery(this).data('page');
-            jQuery.ajax({
-                url: '/manager/product_manager',
-                data: { pageNum: pageNum },
-                success: function(result) {
-                    jQuery('#productTable tbody').html(result);
+
+    /*상품 삭제*/
+    function deleteProduct(productSeq) {
+        jQuery.ajax({
+            url: "/manager/product",
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({productSeq: parseInt(productSeq)}),
+            success: function(result) {
+                // 삭제 성공 시 처리할 코드 작성
+                if (result > 0) {
+                    alert("삭제 성공");
+                    location.href='/manager/product_manager';
+                }else {
+                    alert("삭제 실패");
+                    location.reload();
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                // 삭제 실패 시 처리할 코드 작성
+                alert('카테고리 삭제에 실패하였습니다.');
+            }
+        });
+    }
+
+    /*카테고리 수정*/
+    jQuery(document).on("click", ".change-product-button", function() {
+        var categoryId = jQuery("select[name='categoryId']").val();
+        var statusId = jQuery("select[name='statusId']").val();
+        var productTitle = jQuery("input[name='productTitle']").val();
+        const params = new URLSearchParams(window.location.search);
+        const productSeq = params.get('productSeq');
+
+        jQuery.ajax({
+            url: "/manager/category",
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                productSeq: productSeq,
+                categorySeq: categoryId,
+                productTitle: productTitle,
+                productStatus: statusId
+            }),
+            success: function(result) {
+                // 변경 성공 시 처리할 코드 작성
+                if (result > 0) {
+                    alert("수정 성공");
+                    location.reload();
+                }else {
+                    alert("수정 실패");
+                    location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                // 변경 실패 시 처리할 코드 작성
+            }
         });
     });
 </script>

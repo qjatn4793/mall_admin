@@ -31,11 +31,14 @@ public class ManagerViewController {
 
         List<ManagerVo> productList = managerService.getProductList(startIndex, pageSize); // pageNum 에 해당하는 페이지 데이터 가져오기
 
+        List<ManagerVo> categoryList = managerService.getCategoryList(); // category 데이터 가져오기
+
         PageInfo pageInfo = new PageInfo();
         pageInfo.setPageNum(pageNum);
         pageInfo.setTotalPages(totalPages);
 
         model.addAttribute("productList", productList);
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("pageInfo", pageInfo);
 
         return "manager/product_manager.html";
@@ -47,7 +50,10 @@ public class ManagerViewController {
         // productSeq 값을 이용해 데이터 조회 및 처리
         ManagerVo managerVo = managerService.getProductDetail(productSeq);
 
+        List<ManagerVo> categoryList = managerService.getCategoryList(); // category 데이터 가져오기
+
         model.addAttribute("managerVo", managerVo);
+        model.addAttribute("categoryList", categoryList);
         return "manager/product_detail.html";
     }
 

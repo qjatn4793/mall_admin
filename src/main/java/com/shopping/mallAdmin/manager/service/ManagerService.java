@@ -19,7 +19,21 @@ public class ManagerService {
 
     public List<ManagerVo> getProductList(int startIndex, int pageSize) {
 
-        return managerMapper.getProductList(startIndex, pageSize);
+        List<ManagerVo> productList = managerMapper.getProductList(startIndex, pageSize);
+        for (ManagerVo product : productList) {
+            if (product.getCategorySeq() == 0) {
+
+            }else {
+                product.setCategoryName(managerMapper.getCategoryName(product.getCategorySeq()));
+            }
+        }
+
+        return productList;
+    }
+
+    public List<ManagerVo> getCategoryList() {
+
+        return managerMapper.getCategoryList();
     }
 
     public int getTotalCount() {
@@ -30,6 +44,31 @@ public class ManagerService {
     public ManagerVo getProductDetail(int productSeq) {
 
         return managerMapper.getProductDetail(productSeq);
+    }
+
+    public int createProduct(ManagerVo managerVo) {
+
+        return managerMapper.createProduct(managerVo);
+    }
+
+    public int deleteProduct(ManagerVo managerVo) {
+
+        return managerMapper.deleteProduct(managerVo);
+    }
+
+    public int createCategory(ManagerVo managerVo) {
+
+        return managerMapper.createCategory(managerVo);
+    }
+
+    public int updateCategory(ManagerVo managerVo) {
+
+        return managerMapper.updateCategory(managerVo);
+    }
+
+    public int deleteCategory(int categorySeq) {
+
+        return managerMapper.deleteCategory(categorySeq);
     }
 
 }
