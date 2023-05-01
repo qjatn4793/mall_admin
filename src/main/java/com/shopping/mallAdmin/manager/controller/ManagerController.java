@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.controller;
 
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.UserVo;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,4 +141,52 @@ public class ManagerController {
         }
     }
 
+    @GetMapping("/image/user/{filename:.+}")
+    public void getUserImage(@PathVariable String filename, HttpServletResponse response) {
+
+        String uploadDir = env.getProperty("shared.image.upload-dir");
+        Path path = Paths.get(uploadDir + "/user/" + filename);
+
+        try {
+            InputStream inputStream = Files.newInputStream(path);
+            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+                response.setContentType("image/jpeg");
+            } else if (filename.endsWith(".png")) {
+                response.setContentType("image/png");
+            } else if (filename.endsWith(".gif")) {
+                response.setContentType("image/gif");
+            } else if (filename.endsWith(".bmp")) {
+                response.setContentType("image/bmp");
+            } else {
+                response.setContentType("application/octet-stream");
+            }
+            IOUtils.copy(inputStream, response.getOutputStream()); // 이미지 파일 전송
+        } catch (IOException e) {
+            // 예외 처리
+        }
+    }
+
+    @PutMapping("updateProductStatus")
+    public ResponseEntity<String> updateProductStatus(@RequestParam int productSeq, @RequestParam int productStatus) {
+
+        ManagerVo managerVo = new ManagerVo();
+        managerVo.setProductSeq(productSeq);
+        managerVo.setProductStatus(productStatus);
+
+        managerService.updateProductStatus(managerVo);
+
+        return ResponseEntity.ok().body("상품 상태 업데이트 성공");
+    }
+
+    @PutMapping("updateUserStatus")
+    public ResponseEntity<String> updateUserStatus(@RequestParam int userSeq, @RequestParam int status) {
+
+        UserVo userVo = new UserVo();
+        userVo.setUserSeq(userSeq);
+        userVo.setStatus(status);
+
+        managerService.updateUserStatus(userVo);
+
+        return ResponseEntity.ok().body("사용자 상태 업데이트 성공");
+    }
 }

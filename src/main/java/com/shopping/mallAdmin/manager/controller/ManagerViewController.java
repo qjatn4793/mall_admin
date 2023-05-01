@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.controller;
 
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.UserVo;
 import com.shopping.mallAdmin.util.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,21 @@ public class ManagerViewController {
     }
 
     @GetMapping("/user_manager")
-    public String user() {
+    public String user(@RequestParam(defaultValue = "1") int pageNum, Model model) {
+
+        int pageSize = 12; // 한 페이지에 보여줄 데이터 개수
+        int totalItemCount = managerService.getTotalUserCount(); // 전체 데이터 개수
+        int totalPages = (int) Math.ceil((double) totalItemCount / pageSize); // 전체 페이지 개수
+        int startIndex = (pageNum - 1) * pageSize;
+
+        List<UserVo> userList = managerService.getUserList(startIndex, pageSize); // pageNum 에 해당하는 페이지 데이터 가져오기
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setTotalPages(totalPages);
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("pageInfo", pageInfo);
 
         return "manager/user_manager.html";
     }

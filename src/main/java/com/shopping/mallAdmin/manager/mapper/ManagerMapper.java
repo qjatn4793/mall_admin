@@ -1,6 +1,7 @@
 package com.shopping.mallAdmin.manager.mapper;
 
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,9 +14,13 @@ public interface ManagerMapper {
 
     List<ManagerVo> getProductList(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
+    List<UserVo> getUserList(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
+
     List<ManagerVo> getCategoryList();
 
     int getTotalCount();
+
+    int getTotalUserCount();
 
     ManagerVo getProductDetail(int productSeq);
 
@@ -34,4 +39,8 @@ public interface ManagerMapper {
     int updateThumbImg(ManagerVo managerVo);
 
     int updateProductImg(ManagerVo managerVo);
+
+    int updateProductStatus(ManagerVo managerVo);
+
+    int updateUserStatus(UserVo userVo);
 }

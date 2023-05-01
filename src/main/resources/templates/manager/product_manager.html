@@ -83,9 +83,13 @@
                                         <td th:text="${product.categoryName}"></td>
                                         <td th:text="${product.productRegDate}"></td>
                                         <td th:text="${product.productViews}"></td>
-                                        <td>
+                                        <!--<td>
                                             <span class="badge badge-complete" th:if="${product.productStatus == 1}">사용</span>
                                             <span class="badge badge-pending" th:if="${product.productStatus != 1}">중지</span>
+                                        </td>-->
+                                        <td>
+                                            <span class="badge badge-complete" style="cursor: pointer;" th:if="${product.productStatus == 1}" th:onclick="updateProductStatus([[${product.productSeq}]], [[${product.productStatus}]])">사용</span>
+                                            <span class="badge badge-pending" style="cursor: pointer;" th:if="${product.productStatus != 1}" th:onclick="updateProductStatus([[${product.productSeq}]], [[${product.productStatus}]])">중지</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -293,6 +297,25 @@
             error: function(xhr, status, error) {
                 // 삭제 실패 시 처리할 코드 작성
                 alert('카테고리 삭제에 실패하였습니다.');
+            }
+        });
+    }
+
+    function updateProductStatus(productSeq, currentStatus) {
+
+        var productStatus = currentStatus == 1 ? 2 : 1; // 현재 상태와 반대로 변경
+
+        jQuery.ajax({
+            type: 'PUT',
+            url: '/manager/updateProductStatus',
+            data: {
+                productSeq: productSeq,
+                productStatus: productStatus
+            },
+            success: function(data) {
+                // AJAX 요청이 성공하면 상품 상태를 업데이트
+                alert(data);
+                location.reload();
             }
         });
     }

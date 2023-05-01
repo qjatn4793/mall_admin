@@ -19,13 +19,34 @@
         <result property="categoryName" column="category_name"/>
     </resultMap>
 
+    <resultMap id="userResultMap" type="com.shopping.mallAdmin.manager.vo.UserVo">
+        <id property="userSeq" column="user_seq"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPw" column="user_pw"/>
+        <result property="userName" column="user_name"/>
+        <result property="userProfile" column="user_profile"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
     <select id="getProductList" resultMap="managerResultMap">
       SELECT * FROM product_contents
       LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <select id="getUserList" resultMap="userResultMap">
+      SELECT * FROM user
+      LIMIT #{startIndex}, #{pageSize}
+    </select>
+
     <select id="getTotalCount" resultType="int">
       SELECT COUNT(*) FROM product_contents
+    </select>
+
+    <select id="getTotalUserCount" resultType="int">
+      SELECT COUNT(*) FROM user
     </select>
 
     <select id="getProductDetail" parameterType="int" resultMap="managerResultMap">
@@ -69,6 +90,14 @@
 
     <update id="updateProductImg" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
       UPDATE product_contents SET product_contents = #{productContents}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+    </update>
+
+    <update id="updateProductStatus" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      UPDATE product_contents SET product_status = #{productStatus}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+    </update>
+
+    <update id="updateUserStatus" parameterType="com.shopping.mallAdmin.manager.vo.UserVo">
+      UPDATE user SET status = #{status}, reg_date = NOW() WHERE user_seq=#{userSeq};
     </update>
 
 </mapper>

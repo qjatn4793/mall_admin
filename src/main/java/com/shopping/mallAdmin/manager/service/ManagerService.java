@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.service;
 
 import com.shopping.mallAdmin.manager.mapper.ManagerMapper;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.UserVo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,13 @@ public class ManagerService {
         return productList;
     }
 
+    public List<UserVo> getUserList(int startIndex, int pageSize) {
+
+        List<UserVo> productList = managerMapper.getUserList(startIndex, pageSize);
+
+        return productList;
+    }
+
     public List<ManagerVo> getCategoryList() {
 
         return managerMapper.getCategoryList();
@@ -39,6 +47,11 @@ public class ManagerService {
     public int getTotalCount() {
 
         return managerMapper.getTotalCount();
+    }
+
+    public int getTotalUserCount() {
+
+        return managerMapper.getTotalUserCount();
     }
 
     public ManagerVo getProductDetail(int productSeq) {
@@ -79,6 +92,16 @@ public class ManagerService {
     public int updateProductImg(ManagerVo managerVo){
 
         return managerMapper.updateProductImg(managerVo);
+    }
+
+    public int updateProductStatus(ManagerVo managerVo) {
+
+        return managerMapper.updateProductStatus(managerVo);
+    }
+
+    public int updateUserStatus(UserVo userVo) {
+
+        return managerMapper.updateUserStatus(userVo);
     }
 
 }
