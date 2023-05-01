@@ -27,7 +27,11 @@
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">상품 관리</strong>
-                            <a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>
+                            <!--<a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>-->
+                            <form id="form1" method="post" action="/manager/thumbUploadImg" enctype="multipart/form-data" class="mt-3">
+                                <input type="file" name="file"><br/><br/>
+                                <button type="submit" style="width:100%" class="btn btn-secondary btn-sm change-image-button">이미지 변경</button>
+                            </form>
                         </div>
                         <div class="card-body" style="text-align: center;">
                             <div class="row tm-mb-90 tm-gallery">
@@ -97,11 +101,15 @@
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">상품 상세 관리</strong>
+                            <form id="form2" method="post" action="/manager/productUploadImg" enctype="multipart/form-data" class="mt-3">
+                                <input type="file" name="file"><br/><br/>
+                                <button type="submit" style="width:100%" class="btn btn-secondary btn-sm change-image-button">이미지 변경</button>
+                            </form>
                         </div>
                         <div class="card-body">
                             <div class="row tm-mb-90">
                                 <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
-                                    <a href="#" style="width:100%;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>
+                                    <!--<a href="#" style="width:100%;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>-->
                                     <div th:if="${managerVo.productContents}">
                                         <img th:src="@{${managerVo.productContents}}" alt="Image" class="img-fluid" style="width: 1920px; height: 650px;">
                                     </div>
@@ -209,6 +217,54 @@
             },
             error: function(xhr, status, error) {
                 // 변경 실패 시 처리할 코드 작성
+            }
+        });
+    });
+
+    jQuery('#form1').submit(function(e) {
+        e.preventDefault(); // 기본 동작 방지
+
+        let formData = new FormData(jQuery(this)[0]);
+        let params = new URLSearchParams(window.location.search);
+        let productSeq = params.get('productSeq');
+        let actionUrl = jQuery(this).attr('action') + '?productSeq=' + productSeq;
+
+        jQuery.ajax({
+            url: actionUrl,
+            type: jQuery(this).attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert(response);
+                location.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Failed to upload file');
+            }
+        });
+    });
+
+    jQuery('#form2').submit(function(e) {
+        e.preventDefault(); // 기본 동작 방지
+
+        let formData = new FormData(jQuery(this)[0]);
+        let params = new URLSearchParams(window.location.search);
+        let productSeq = params.get('productSeq');
+        let actionUrl = jQuery(this).attr('action') + '?productSeq=' + productSeq;
+
+        jQuery.ajax({
+            url: actionUrl,
+            type: jQuery(this).attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert(response);
+                location.reload();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Failed to upload file');
             }
         });
     });

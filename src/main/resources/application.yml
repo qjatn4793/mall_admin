@@ -26,3 +26,7 @@ spring :
     config-location: classpath:mybatis-config.xml
     configuration:
       map-underscore-to-camel-case: true
+
+shared:
+  image:
+    upload-dir: D:\project\mallDriver\common\img

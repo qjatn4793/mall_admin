@@ -71,4 +71,14 @@ public class ManagerService {
         return managerMapper.deleteCategory(categorySeq);
     }
 
+    public int updateThumbImg(ManagerVo managerVo){
+
+        return managerMapper.updateThumbImg(managerVo);
+    }
+
+    public int updateProductImg(ManagerVo managerVo){
+
+        return managerMapper.updateProductImg(managerVo);
+    }
+
 }

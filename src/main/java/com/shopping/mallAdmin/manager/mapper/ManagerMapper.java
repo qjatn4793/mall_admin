@@ -30,4 +30,8 @@ public interface ManagerMapper {
     int updateCategory(ManagerVo managerVo);
 
     int deleteCategory(int categorySeq);
+
+    int updateThumbImg(ManagerVo managerVo);
+
+    int updateProductImg(ManagerVo managerVo);
 }

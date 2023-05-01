@@ -63,4 +63,12 @@
       DELETE FROM category WHERE category_seq = #{categorySeq}
     </delete>
 
+    <update id="updateThumbImg" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      UPDATE product_contents SET thumb_contents = #{thumbContents}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+    </update>
+
+    <update id="updateProductImg" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
+      UPDATE product_contents SET product_contents = #{productContents}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+    </update>
+
 </mapper>
