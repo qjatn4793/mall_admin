@@ -27,6 +27,11 @@ spring :
     configuration:
       map-underscore-to-camel-case: true
 
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+
 shared:
   image:
     upload-dir: D:\project\mallDriver\common\img
