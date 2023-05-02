@@ -27,7 +27,9 @@
         <result property="userProfile" column="user_profile"/>
         <result property="userBirth" column="user_birth"/>
         <result property="userPhone" column="user_phone"/>
+        <result property="userEmail" column="user_email"/>
         <result property="regDate" column="reg_date"/>
+        <result property="loginDate" column="login_date"/>
         <result property="status" column="status"/>
     </resultMap>
 

@@ -41,6 +41,7 @@
                                     <th>Name</th>
                                     <th>Birth</th>
                                     <th>RegDate</th>
+                                    <th>LoginDate</th>
                                     <th>Phone</th>
                                     <th>Status</th>
                                     <!--<th>ID</th>-->
@@ -56,11 +57,10 @@
                                             <span th:unless="${user.userProfile}">이미지 없음</span>
                                         </div>
                                     </td>
-                                    <td th:text="${user.userName}">
-                                        <!--<a th:text="${user.userName}" th:href="@{/manager/user_detail(userSeq=${user.userSeq})}"></a>-->
-                                    </td>
+                                    <td th:text="${user.userName}"></td>
                                     <td th:text="${user.userBirth}"></td>
                                     <td th:text="${user.regDate}"></td>
+                                    <td th:text="${user.loginDate}"></td>
                                     <td th:text="${user.userPhone}"></td>
                                     <td>
                                         <span class="badge badge-complete" style="cursor: pointer;" th:if="${user.status == 1}" th:onclick="updateStatus([[${user.userSeq}]], [[${user.status}]])">사용</span>
