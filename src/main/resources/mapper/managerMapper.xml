@@ -9,7 +9,10 @@
         <result property="productRegDate" column="product_regDate"/>
         <result property="productViews" column="product_views"/>
         <result property="productStatus" column="product_status"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="productCount" column="product_count"/>
         <result property="productContents" column="product_contents"/>
+        <result property="productExplain" column="product_explain"/>
         <result property="thumbContents" column="thumb_contents"/>
     </resultMap>
 
@@ -33,8 +36,26 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <resultMap id="orderResultMap" type="com.shopping.mallAdmin.manager.vo.OrderVo">
+        <id property="orderSeq" column="order_seq"/>
+        <result property="orderUserId" column="order_user_id"/>
+        <result property="orderRegDate" column="order_regDate"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderCount" column="order_count"/>
+        <result property="productSeq" column="product_seq"/>
+        <result property="productTitle" column="product_title"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="categorySeq" column="category_seq"/>
+        <result property="categoryName" column="category_name"/>
+    </resultMap>
+
     <select id="getProductList" resultMap="managerResultMap">
       SELECT * FROM product_contents
+      LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getOrderList" resultMap="orderResultMap">
+      SELECT * FROM product_order
       LIMIT #{startIndex}, #{pageSize}
     </select>
 
@@ -49,6 +70,10 @@
 
     <select id="getTotalUserCount" resultType="int">
       SELECT COUNT(*) FROM user
+    </select>
+
+    <select id="getOrderTotalCount" resultType="int">
+      SELECT COUNT(*) FROM product_order
     </select>
 
     <select id="getProductDetail" parameterType="int" resultMap="managerResultMap">
@@ -66,8 +91,8 @@
     </select>
 
     <insert id="createProduct" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      INSERT INTO product_contents (product_title, product_status, category_seq, product_regDate)
-      VALUES (#{productTitle}, #{productStatus}, #{categorySeq}, NOW())
+      INSERT INTO product_contents (product_title, product_status, product_price, product_price, product_explain, category_seq, product_regDate)
+      VALUES (#{productTitle}, #{productStatus}, #{productPrice}, #{productCount}, #{productExplain}, #{categorySeq}, NOW())
     </insert>
 
     <delete id="deleteProduct" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
@@ -79,7 +104,7 @@
     </insert>
 
     <update id="updateCategory" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      UPDATE product_contents SET category_seq=#{categorySeq}, product_title=#{productTitle}, product_status=#{productStatus} WHERE product_seq=#{productSeq};
+      UPDATE product_contents SET category_seq=#{categorySeq}, product_title=#{productTitle}, product_price=#{productPrice}, product_count=#{productCount}, product_explain=#{productExplain}, product_status=#{productStatus} WHERE product_seq=#{productSeq};
     </update>
 
     <delete id="deleteCategory" parameterType="int">
@@ -102,4 +127,11 @@
       UPDATE user SET status = #{status}, reg_date = NOW() WHERE user_seq=#{userSeq};
     </update>
 
+    <update id="updateOrderStatus" parameterType="com.shopping.mallAdmin.manager.vo.OrderVo">
+      UPDATE product_order SET order_status = #{orderStatus}, order_regDate = NOW() WHERE order_seq=#{orderSeq};
+    </update>
+
+    <select id="getSelectVo" parameterType="int" resultType="com.shopping.mallAdmin.manager.vo.OrderVo">
+      SELECT category_seq, product_price, product_title FROM product_contents WHERE product_seq=#{productSeq}
+    </select>
 </mapper>

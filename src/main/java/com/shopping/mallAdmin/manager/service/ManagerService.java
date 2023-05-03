@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.service;
 
 import com.shopping.mallAdmin.manager.mapper.ManagerMapper;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.OrderVo;
 import com.shopping.mallAdmin.manager.vo.UserVo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,21 @@ public class ManagerService {
         return productList;
     }
 
+    public List<OrderVo> getOrderList(int startIndex, int pageSize) {
+
+        List<OrderVo> orderList = managerMapper.getOrderList(startIndex, pageSize);
+
+        for (OrderVo order : orderList) {
+            OrderVo orderVo = managerMapper.getSelectVo(order.getProductSeq());
+            order.setCategorySeq(orderVo.getCategorySeq());
+            order.setProductPrice(orderVo.getProductPrice());
+            order.setProductTitle(orderVo.getProductTitle());
+            order.setCategoryName(managerMapper.getCategoryName(order.getCategorySeq()));
+        }
+
+        return orderList;
+    }
+
     public List<UserVo> getUserList(int startIndex, int pageSize) {
 
         List<UserVo> productList = managerMapper.getUserList(startIndex, pageSize);
@@ -52,6 +68,11 @@ public class ManagerService {
     public int getTotalUserCount() {
 
         return managerMapper.getTotalUserCount();
+    }
+
+    public int getOrderTotalCount() {
+
+        return managerMapper.getOrderTotalCount();
     }
 
     public ManagerVo getProductDetail(int productSeq) {
@@ -102,6 +123,11 @@ public class ManagerService {
     public int updateUserStatus(UserVo userVo) {
 
         return managerMapper.updateUserStatus(userVo);
+    }
+
+    public int updateOrderStatus(OrderVo orderVo) {
+
+        return managerMapper.updateOrderStatus(orderVo);
     }
 
 }

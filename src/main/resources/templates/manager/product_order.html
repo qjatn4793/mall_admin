@@ -1,0 +1,117 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/head :: headFragment"></th:block>
+</head>
+<body>
+<!-- Left Panel -->
+<th:block th:replace="common/nav :: navFragment"></th:block>
+<!-- /#left-panel -->
+
+<!-- Right Panel -->
+
+<div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <th:block th:replace="common/header :: headerFragment"></th:block>
+    <!-- /#header -->
+
+    <!-- Breadcrumbs-->
+    <th:block th:replace="common/breadcrubs :: breadFragment"></th:block>
+    <!-- /.breadcrumbs-->
+
+    <div class="content">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title">주문 내역</strong>
+                        </div>
+
+
+                        <div class="table-stats order-table ov-h">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">#</th>
+                                    <th>Title</th>
+                                    <th>User</th>
+                                    <th>Order_Count</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>RegDate</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="order : ${orderList}">
+                                    <td th:text="${order.orderSeq}"></td>
+                                    <td th:text="${order.productTitle}"></td>
+                                    <td style="text-transform: inherit;" th:text="${order.orderUserId}"></td>
+                                    <td th:text="${order.orderCount} + '개'"></td>
+                                    <td th:text="${order.productPrice * order.orderCount} + '원'"></td>
+                                    <td th:text="${order.categoryName}"></td>
+                                    <td th:text="${order.orderRegDate}"></td>
+                                    <td>
+                                        <span class="badge badge-complete" style="cursor: pointer;" th:if="${order.orderStatus == 1}" th:onclick="updateOrderStatus([[${order.productSeq}]], [[${order.orderStatus}]])">결제완료</span>
+                                        <span class="badge badge-pending" style="cursor: pointer;" th:if="${order.orderStatus == 2}" th:onclick="updateOrderStatus([[${order.productSeq}]], [[${order.orderStatus}]])">배송대기</span>
+                                        <span class="badge badge-danger" style="cursor: pointer;" th:if="${order.orderStatus == 3}" th:onclick="updateOrderStatus([[${order.productSeq}]], [[${order.orderStatus}]])">배송완료</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- 페이징 처리 -->
+                            <div class="pagination">
+                                <ul>
+                                    <li th:if="${pageInfo.pageNum > 1}">
+                                        <a th:href="@{/manager/product_order(pageNum=${pageInfo.pageNum - 1})}" th:text="'&laquo;'"></a>
+                                    </li>
+                                    <li th:each="page : ${#numbers.sequence(1, pageInfo.totalPages)}" th:class="${page == pageInfo.pageNum} ? active">
+                                        <a th:href="@{/manager/product_order(pageNum=${page})}" th:text="${page}"></a>
+                                    </li>
+                                    <li th:if="${pageInfo.pageNum < pageInfo.totalPages}">
+                                        <a th:href="@{/manager/product_order(pageNum=${pageInfo.pageNum + 1})}" th:text="'&raquo;'"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> <!-- /.table-stats -->
+                    </div>
+                </div>
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+    <div class="clearfix"></div>
+
+    <!-- Footer -->
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
+    <!--/.site-footer -->
+
+</div><!-- /#right-panel -->
+<script>
+
+    function updateOrderStatus(orderSeq, currentStatus) {
+
+        var orderStatus = currentStatus % 3 + 1; // 1일 경우는 2 2일 경우는 3 3일 경우는 1로 변경
+
+        jQuery.ajax({
+            type: 'PUT',
+            url: '/manager/updateOrderStatus',
+            data: {
+                orderSeq: orderSeq,
+                orderStatus: orderStatus
+            },
+            success: function(data) {
+                // AJAX 요청이 성공하면 상품 상태를 업데이트
+                alert(data);
+                location.reload();
+            }
+        });
+    }
+</script>
+
+<!-- Right Panel -->
+</body>
+</html>

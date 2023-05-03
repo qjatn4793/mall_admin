@@ -2581,6 +2581,7 @@ footer.site-footer {
 
 .pagination {
   margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
   display: flex;
   justify-content: center;

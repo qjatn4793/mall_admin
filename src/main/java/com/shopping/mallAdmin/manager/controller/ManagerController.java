@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.controller;
 
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.OrderVo;
 import com.shopping.mallAdmin.manager.vo.UserVo;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -188,5 +189,17 @@ public class ManagerController {
         managerService.updateUserStatus(userVo);
 
         return ResponseEntity.ok().body("사용자 상태 업데이트 성공");
+    }
+
+    @PutMapping("updateOrderStatus")
+    public ResponseEntity<String> updateOrderStatus(@RequestParam int orderSeq, @RequestParam int orderStatus) {
+
+        OrderVo orderVo = new OrderVo();
+        orderVo.setOrderSeq(orderSeq);
+        orderVo.setOrderStatus(orderStatus);
+
+        managerService.updateOrderStatus(orderVo);
+
+        return ResponseEntity.ok().body("주문 상태 업데이트 성공");
     }
 }

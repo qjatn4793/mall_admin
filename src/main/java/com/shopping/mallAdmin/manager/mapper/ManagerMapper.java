@@ -1,6 +1,7 @@
 package com.shopping.mallAdmin.manager.mapper;
 
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.OrderVo;
 import com.shopping.mallAdmin.manager.vo.UserVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,11 +17,15 @@ public interface ManagerMapper {
 
     List<UserVo> getUserList(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
+    List<OrderVo> getOrderList(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
+
     List<ManagerVo> getCategoryList();
 
     int getTotalCount();
 
     int getTotalUserCount();
+
+    int getOrderTotalCount();
 
     ManagerVo getProductDetail(int productSeq);
 
@@ -43,4 +48,9 @@ public interface ManagerMapper {
     int updateProductStatus(ManagerVo managerVo);
 
     int updateUserStatus(UserVo userVo);
+
+    int updateOrderStatus(OrderVo orderVo);
+
+    OrderVo getSelectVo(int productSeq);
+
 }

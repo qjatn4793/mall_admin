@@ -26,7 +26,7 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">상품 관리</strong>
+                            <strong class="card-title">상품 썸네일 관리</strong>
                             <!--<a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>-->
                             <form id="form1" method="post" action="/manager/thumbUploadImg" enctype="multipart/form-data" class="mt-3">
                                 <input type="file" name="file"><br/><br/>
@@ -61,6 +61,14 @@
                                     <div class="form-group">
                                         <label for="productTitle">상품명</label>
                                         <input type="text" id="productTitle" class="form-control" name="productTitle" th:value="${managerVo.productTitle}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productPrice">가격</label>
+                                        <input type="number" id="productPrice" class="form-control" name="productPrice" th:value="${managerVo.productPrice}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productTitle">상품설명</label>
+                                        <input type="text" id="productExplain" class="form-control" name="productExplain" th:value="${managerVo.productExplain}">
                                     </div>
                                     <div class="form-group">
                                         <label for="categoryId">카테고리</label>
@@ -109,7 +117,6 @@
                         <div class="card-body">
                             <div class="row tm-mb-90">
                                 <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
-                                    <!--<a href="#" style="width:100%;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>-->
                                     <div th:if="${managerVo.productContents}">
                                         <img th:src="@{${managerVo.productContents}}" alt="Image" class="img-fluid" style="width: 1920px; height: 650px;">
                                     </div>
@@ -118,33 +125,24 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
-                                    <div class="tm-bg-gray tm-video-details">
-                                        <p class="mb-4">
-                                            Please support us by making <a href="https://paypal.me/templatemo" target="_parent" rel="sponsored">a PayPal donation</a>. Nam ex nibh, efficitur eget libero ut, placerat aliquet justo. Cras nec varius leo.
-                                        </p>
-                                        <div class="text-center mb-5">
-                                            <a href="#" style="padding: 12px 90px 14px;" class="btn btn-primary">Download</a>
-                                        </div>
-                                        <div class="mb-4 d-flex flex-wrap">
-                                            <div class="mr-4 mb-2">
-                                                <span class="tm-text-gray-dark">Dimension: </span><span class="tm-text-primary">1920x1080</span>
-                                            </div>
-                                            <div class="mr-4 mb-2">
-                                                <span class="tm-text-gray-dark">Format: </span><span class="tm-text-primary">JPG</span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-4">
-                                            <h3 class="tm-text-gray-dark mb-3">License</h3>
-                                            <p>Free for both personal and commercial use. No need to pay anything. No need to make any attribution.</p>
+                                    <div class="tm-bg-gray">
+                                        <p class="mb-4 font-3xl" th:text="${managerVo.productTitle}"></p>
+                                        <div class="mb-4" th:if="${managerVo.productExplain}">
+                                            <h3 class="tm-text-gray-dark mb-3">상품설명</h3>
+                                            <p th:text="${managerVo.productExplain}"></p>
                                         </div>
                                         <div>
-                                            <h3 class="tm-text-gray-dark mb-3">Category</h3>
+                                            <h3 class="tm-text-gray-dark mb-3">카테고리</h3>
                                             <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block" th:each="category : ${categoryList}" th:text="${category.categoryName}" th:if="${managerVo.categorySeq == category.categorySeq}"></a>
                                         </div>
+                                        <div class="mb-4 d-flex flex-wrap">
+                                            <h3 class="tm-text-gray-dark mb-3" th:text="${managerVo.productPrice}"></h3>
+                                        </div>
+                                        <div class="mb-4 d-flex" style="position: absolute; bottom: 0px;">
+                                            <button class="btn btn-danger" style="padding: 12px 75px 14px; margin-right: 10px;" th:onclick="deleteProduct([[${managerVo.productSeq}]]);">상품 삭제</button>
+                                            <button style="padding: 12px 75px 14px;" onclick="window.location.href = document.referrer;" class="btn btn-primary">목록으로 가기</button>
+                                        </div>
                                     </div>
-                                    <br><br>
-                                    <button style="position: absolute; bottom: 0; right: 128px;" class="btn btn-danger" th:onclick="deleteProduct([[${managerVo.productSeq}]]);">상품 삭제</button>
-                                    <button style="position: absolute; bottom: 0; right: 0;" onclick="location.href='/manager/product_manager'" class="btn btn-primary">목록으로 가기</button>
                                 </div>
                             </div>
                         </div>
@@ -192,8 +190,46 @@
         var categoryId = jQuery("select[name='categoryId']").val();
         var statusId = jQuery("select[name='statusId']").val();
         var productTitle = jQuery("input[name='productTitle']").val();
+        var productExplain = jQuery("input[name='productExplain']").val();
+        var productPrice = jQuery("input[name='productPrice']").val();
         const params = new URLSearchParams(window.location.search);
         const productSeq = params.get('productSeq');
+
+        var categoryId = jQuery("select[name='categoryId']").val();
+        var statusId = jQuery("select[name='statusId']").val();
+        var productTitle = jQuery("input[name='productTitle']").val();
+        var productExplain = jQuery("input[name='productExplain']").val();
+        var productPrice = jQuery("input[name='productPrice']").val();
+
+        // 카테고리 ID가 선택되지 않은 경우
+        if (!categoryId) {
+            alert('카테고리를 선택해주세요.');
+            return;
+        }
+
+        // 상태 ID가 선택되지 않은 경우
+        if (!statusId) {
+            alert('상태를 선택해주세요.');
+            return;
+        }
+
+        // 제품 이름이 빈 문자열인 경우 또는 공백으로만 이루어진 경우
+        if (!productTitle.trim()) {
+            alert('제품 이름을 입력해주세요.');
+            return;
+        }
+
+        // 제품 설명이 빈 문자열인 경우 또는 공백으로만 이루어진 경우
+        if (!productExplain.trim()) {
+            alert('제품 설명을 입력해주세요.');
+            return;
+        }
+
+        // 제품 가격이 빈 문자열이거나 숫자가 아닌 경우
+        if (!productPrice.trim() || isNaN(Number(productPrice))) {
+            alert('제품 가격을 입력해주세요.');
+            return;
+        }
 
         jQuery.ajax({
             url: "/manager/category",
@@ -203,6 +239,8 @@
                 productSeq: productSeq,
                 categorySeq: categoryId,
                 productTitle: productTitle,
+                productExplain: productExplain,
+                productPrice: productPrice,
                 productStatus: statusId
             }),
             success: function(result) {

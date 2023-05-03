@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.manager.controller;
 
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
+import com.shopping.mallAdmin.manager.vo.OrderVo;
 import com.shopping.mallAdmin.manager.vo.UserVo;
 import com.shopping.mallAdmin.util.PageInfo;
 import lombok.AllArgsConstructor;
@@ -82,5 +83,25 @@ public class ManagerViewController {
     public String admin() {
 
         return "manager/admin_manager.html";
+    }
+
+    @GetMapping("/product_order")
+    public String productOrder(@RequestParam(defaultValue = "1") int pageNum, Model model) {
+
+        int pageSize = 12; // 한 페이지에 보여줄 데이터 개수
+        int totalItemCount = managerService.getOrderTotalCount(); // 전체 데이터 개수
+        int totalPages = (int) Math.ceil((double) totalItemCount / pageSize); // 전체 페이지 개수
+        int startIndex = (pageNum - 1) * pageSize;
+
+        List<OrderVo> orderList = managerService.getOrderList(startIndex, pageSize); // pageNum 에 해당하는 페이지 데이터 가져오기
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setTotalPages(totalPages);
+
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("pageInfo", pageInfo);
+
+        return "manager/product_order.html";
     }
 }

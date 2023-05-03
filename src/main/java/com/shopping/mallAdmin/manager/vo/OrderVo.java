@@ -9,21 +9,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManagerVo {
-    /*product_contents*/
+public class OrderVo {
+    private int orderSeq;
+    private String orderUserId;
+    private String orderRegDate;
+    private int orderCount;
+    private int orderStatus;
     private int productSeq;
     private String productTitle;
-    private String productRegDate;
-    private int productViews;
-    private String productContents;
-    private String productExplain;
     private int productPrice;
-    private int productCount;
-    private String thumbContents;
-    private int productStatus;
-
-
-    /*category_contents*/
     private int categorySeq;
+
     private String categoryName;
 }
