@@ -69,7 +69,7 @@ public class ManagerController {
 
         ManagerVo managerVo = new ManagerVo();
 
-        Path path = Paths.get("/manager/image" + "/" + file.getOriginalFilename());
+        Path path = Paths.get("/manager/image" + "/thumb/" + file.getOriginalFilename());
         String productSeq = request.getParameter("productSeq");
 
         if (productSeq == null) {
@@ -89,7 +89,7 @@ public class ManagerController {
 
         ManagerVo managerVo = new ManagerVo();
 
-        Path path = Paths.get("/manager/image" + "/" + file.getOriginalFilename());
+        Path path = Paths.get("/manager/image" + "/product/" + file.getOriginalFilename());
         String productSeq = request.getParameter("productSeq");
 
         if (productSeq == null) {
@@ -104,6 +104,31 @@ public class ManagerController {
         return uploadFile(file);
     }
 
+    @GetMapping("/image/{contents}/{filename:.+}")
+    public void getImage(@PathVariable String contents, @PathVariable String filename, HttpServletResponse response) {
+
+        String uploadDir = env.getProperty("shared.image.upload-dir");
+        Path path = Paths.get(uploadDir + "/" + contents + "/" + filename);
+
+        try {
+            InputStream inputStream = Files.newInputStream(path);
+            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+                response.setContentType("image/jpeg");
+            } else if (filename.endsWith(".png")) {
+                response.setContentType("image/png");
+            } else if (filename.endsWith(".gif")) {
+                response.setContentType("image/gif");
+            } else if (filename.endsWith(".bmp")) {
+                response.setContentType("image/bmp");
+            } else {
+                response.setContentType("application/octet-stream");
+            }
+            IOUtils.copy(inputStream, response.getOutputStream()); // 이미지 파일 전송
+        } catch (IOException e) {
+            // 예외 처리
+        }
+    }
+
     /*파일업로드 공통 메소드*/
     private ResponseEntity<String> uploadFile(MultipartFile file) {
         try {
@@ -114,56 +139,6 @@ public class ManagerController {
             return ResponseEntity.ok("File uploaded successfully");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
-        }
-    }
-
-    @GetMapping("/image/{filename:.+}")
-    public void getImage(@PathVariable String filename, HttpServletResponse response) {
-
-        String uploadDir = env.getProperty("shared.image.upload-dir");
-        Path path = Paths.get(uploadDir + "/" + filename);
-
-        try {
-            InputStream inputStream = Files.newInputStream(path);
-            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
-                response.setContentType("image/jpeg");
-            } else if (filename.endsWith(".png")) {
-                response.setContentType("image/png");
-            } else if (filename.endsWith(".gif")) {
-                response.setContentType("image/gif");
-            } else if (filename.endsWith(".bmp")) {
-                response.setContentType("image/bmp");
-            } else {
-                response.setContentType("application/octet-stream");
-            }
-            IOUtils.copy(inputStream, response.getOutputStream()); // 이미지 파일 전송
-        } catch (IOException e) {
-            // 예외 처리
-        }
-    }
-
-    @GetMapping("/image/user/{filename:.+}")
-    public void getUserImage(@PathVariable String filename, HttpServletResponse response) {
-
-        String uploadDir = env.getProperty("shared.image.upload-dir");
-        Path path = Paths.get(uploadDir + "/user/" + filename);
-
-        try {
-            InputStream inputStream = Files.newInputStream(path);
-            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
-                response.setContentType("image/jpeg");
-            } else if (filename.endsWith(".png")) {
-                response.setContentType("image/png");
-            } else if (filename.endsWith(".gif")) {
-                response.setContentType("image/gif");
-            } else if (filename.endsWith(".bmp")) {
-                response.setContentType("image/bmp");
-            } else {
-                response.setContentType("application/octet-stream");
-            }
-            IOUtils.copy(inputStream, response.getOutputStream()); // 이미지 파일 전송
-        } catch (IOException e) {
-            // 예외 처리
         }
     }
 
