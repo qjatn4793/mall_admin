@@ -51,6 +51,12 @@ public interface ManagerMapper {
 
     int updateOrderStatus(OrderVo orderVo);
 
+    int cancleOrder(OrderVo orderVo);
+
+    int updateProductCount(OrderVo orderVo);
+
     OrderVo getSelectVo(int productSeq);
+
+    OrderVo selectOrderVo(int orderSeq);
 
 }

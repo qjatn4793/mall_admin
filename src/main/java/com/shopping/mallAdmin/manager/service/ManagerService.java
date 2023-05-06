@@ -130,4 +130,21 @@ public class ManagerService {
         return managerMapper.updateOrderStatus(orderVo);
     }
 
+    public int cancleOrder(OrderVo orderVo) {
+        OrderVo resultVo = managerMapper.selectOrderVo(orderVo.getOrderSeq());
+        OrderVo productVo = managerMapper.getSelectVo(resultVo.getProductSeq());
+        int productPrice = productVo.getProductPrice();
+        int orderCount = resultVo.getOrderCount();
+        resultVo.setProductPrice(productPrice * orderCount);
+
+        if(managerMapper.cancleOrder(resultVo) > 0){
+            if (managerMapper.updateProductCount(resultVo) > 0){
+                return managerMapper.updateOrderStatus(orderVo);
+            } else {
+                return 0;
+            }
+        }else {
+            return 0;
+        }
+    }
 }

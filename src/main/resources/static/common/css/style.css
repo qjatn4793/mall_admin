@@ -473,7 +473,7 @@ canvas {
   .order-table tr th {
     background: #e8e9ef; }
   .order-table tr td:last-child, .order-table tr th:last-child {
-    text-align: right; }
+    text-align: center; }
   .order-table tr:last-child td {
     border: none; }
   .order-table .badge {
@@ -1456,7 +1456,8 @@ header .form-inline {
     font-size: 12px;
     font-weight: normal;
     padding: .75em 1.25em;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    text-align: center}
     .table-stats table th img,
     .table-stats table td img {
       margin-right: 10px;

@@ -14,6 +14,7 @@ public class UserVo {
     private String userId;
     private String userPw;
     private String userName;
+    private int totalPrice;
     private String userProfile;
     private String userBirth;
     private String userPhone;
@@ -21,4 +22,5 @@ public class UserVo {
     private String regDate;
     private String loginDate;
     private int status;
+    private String adYn;
 }

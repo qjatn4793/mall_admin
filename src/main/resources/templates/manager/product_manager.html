@@ -99,7 +99,7 @@
                                     <li th:if="${pageInfo.pageNum > 1}">
                                         <a th:href="@{/manager/product_manager(pageNum=${pageInfo.pageNum - 1})}" th:text="'&laquo;'"></a>
                                     </li>
-                                    <li th:each="page : ${#numbers.sequence(1, pageInfo.totalPages)}" th:class="${page == pageInfo.pageNum} ? active">
+                                    <li th:each="page : ${#numbers.sequence(1, pageInfo.totalPages)}" th:class="${page == pageInfo.pageNum} ? active" th:if="${page != 0}">
                                         <a th:href="@{/manager/product_manager(pageNum=${page})}" th:text="${page}"></a>
                                     </li>
                                     <li th:if="${pageInfo.pageNum < pageInfo.totalPages}">
@@ -159,8 +159,16 @@
                         <input type="text" id="productTitle" class="form-control" name="productTitle">
                     </div>
                     <div class="form-group">
-                        <label for="productTitle">가격</label>
+                        <label for="productPrice">가격</label>
                         <input type="number" id="productPrice" class="form-control" name="productPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCount">상품재고</label>
+                        <input type="number" id="productCount" class="form-control" name="productCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="productExplain">상품설명</label>
+                        <input type="text" id="productExplain" class="form-control" name="productExplain">
                     </div>
                     <div class="form-group">
                         <label for="categoryId">카테고리</label>
@@ -207,6 +215,8 @@
             const categoryId = jQuery('#categoryId').val(); // 타입 문자열
             const statusId = jQuery('#statusId').val(); // 타입 숫자
             const productPrice = jQuery('#productPrice').val(); // 타입 숫자
+            const productCount = jQuery('#productCount').val(); // 타입 숫자
+            const productExplain = jQuery('#productExplain').val(); // 타입 문자열
 
             // 제품 제목이 빈 문자열인 경우 또는 공백으로만 이루어진 경우
             if (!productTitle.trim()) {
@@ -228,7 +238,13 @@
 
             // 제품 가격이 빈 문자열이거나 숫자가 아닌 경우
             if (!productPrice.trim() || isNaN(Number(productPrice))) {
-                alert('제품 가격을 입력해주세요.');
+                alert('제품 가격을 정확하게 입력해주세요.');
+                return;
+            }
+
+            // 상태 ID가 빈 문자열이거나 숫자가 아닌 경우
+            if (!productCount.trim() || isNaN(Number(productCount))) {
+                alert('제품 재고를 정확하게 입력해주세요.');
                 return;
             }
 
@@ -236,7 +252,14 @@
                 url: "/manager/product",
                 method: "POST",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({productTitle: productTitle, categorySeq: categoryId, productStatus: statusId, productPrice: productPrice}),
+                data: JSON.stringify({
+                        productTitle: productTitle,
+                        categorySeq: categoryId,
+                        productStatus: statusId,
+                        productPrice: productPrice,
+                        productCount: productCount,
+                        productExplain: productExplain
+                }),
                 success: function(data) {
                     console.log(data);
                     if (data > 0) {

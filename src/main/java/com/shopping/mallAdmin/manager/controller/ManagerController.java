@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @AllArgsConstructor
 @ResponseBody
@@ -69,11 +70,14 @@ public class ManagerController {
 
         ManagerVo managerVo = new ManagerVo();
 
-        Path path = Paths.get("/manager/image" + "/thumb/" + file.getOriginalFilename());
+        String uuid = UUID.randomUUID().toString();
+        String filename = uuid + "_" + file.getOriginalFilename();
+
+        Path path = Paths.get("/manager/image" + "/thumb/" + filename);
         String productSeq = request.getParameter("productSeq");
 
         if (productSeq == null) {
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
         }
 
         managerVo.setProductSeq(Integer.parseInt(productSeq));
@@ -81,7 +85,7 @@ public class ManagerController {
 
         managerService.updateThumbImg(managerVo);
 
-        return uploadFile(file);
+        return uploadFile(file, filename, "/thumb/");
     }
 
     @PostMapping("/productUploadImg")
@@ -89,11 +93,14 @@ public class ManagerController {
 
         ManagerVo managerVo = new ManagerVo();
 
-        Path path = Paths.get("/manager/image" + "/product/" + file.getOriginalFilename());
+        String uuid = UUID.randomUUID().toString();
+        String filename = uuid + "_" + file.getOriginalFilename();
+
+        Path path = Paths.get("/manager/image" + "/product/" + filename);
         String productSeq = request.getParameter("productSeq");
 
         if (productSeq == null) {
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
         }
 
         managerVo.setProductSeq(Integer.parseInt(productSeq));
@@ -101,7 +108,7 @@ public class ManagerController {
 
         managerService.updateProductImg(managerVo);
 
-        return uploadFile(file);
+        return uploadFile(file, filename,"/product/");
     }
 
     @GetMapping("/image/{contents}/{filename:.+}")
@@ -130,10 +137,10 @@ public class ManagerController {
     }
 
     /*파일업로드 공통 메소드*/
-    private ResponseEntity<String> uploadFile(MultipartFile file) {
+    private ResponseEntity<String> uploadFile(MultipartFile file, String filename,String contentsPath) {
         try {
             String uploadDir = env.getProperty("shared.image.upload-dir");
-            Path path = Paths.get(uploadDir + "/" + file.getOriginalFilename());
+            Path path = Paths.get(uploadDir + contentsPath + filename);
 
             Files.write(path, file.getBytes());
             return ResponseEntity.ok("File uploaded successfully");
@@ -142,39 +149,69 @@ public class ManagerController {
         }
     }
 
-    @PutMapping("updateProductStatus")
+    @PutMapping("/updateProductStatus")
     public ResponseEntity<String> updateProductStatus(@RequestParam int productSeq, @RequestParam int productStatus) {
 
         ManagerVo managerVo = new ManagerVo();
         managerVo.setProductSeq(productSeq);
         managerVo.setProductStatus(productStatus);
 
-        managerService.updateProductStatus(managerVo);
+        int result = managerService.updateProductStatus(managerVo);
 
-        return ResponseEntity.ok().body("상품 상태 업데이트 성공");
+        if (result > 0) {
+            return ResponseEntity.ok().body("상품 상태 업데이트 성공");
+        }else {
+            return ResponseEntity.ok().body("상품 상태 업데이트 실패");
+        }
+
     }
 
-    @PutMapping("updateUserStatus")
+    @PutMapping("/updateUserStatus")
     public ResponseEntity<String> updateUserStatus(@RequestParam int userSeq, @RequestParam int status) {
 
         UserVo userVo = new UserVo();
         userVo.setUserSeq(userSeq);
         userVo.setStatus(status);
 
-        managerService.updateUserStatus(userVo);
+        int result = managerService.updateUserStatus(userVo);
 
-        return ResponseEntity.ok().body("사용자 상태 업데이트 성공");
+        if (result > 0) {
+            return ResponseEntity.ok().body("사용자 상태 업데이트 성공");
+        }else {
+            return ResponseEntity.ok().body("사용자 상태 업데이트 실패");
+        }
+
     }
 
-    @PutMapping("updateOrderStatus")
+    @PutMapping("/updateOrderStatus")
     public ResponseEntity<String> updateOrderStatus(@RequestParam int orderSeq, @RequestParam int orderStatus) {
 
         OrderVo orderVo = new OrderVo();
         orderVo.setOrderSeq(orderSeq);
         orderVo.setOrderStatus(orderStatus);
 
-        managerService.updateOrderStatus(orderVo);
+        int result = managerService.updateOrderStatus(orderVo);
 
-        return ResponseEntity.ok().body("주문 상태 업데이트 성공");
+        if (result > 0) {
+            return ResponseEntity.ok().body("주문 상태 업데이트 성공");
+        }else {
+            return ResponseEntity.ok().body("주문 상태 업데이트 실패");
+        }
+    }
+
+    @PutMapping("/cancleOrder")
+    public ResponseEntity<String> cancleOrder(@RequestParam int orderSeq, @RequestParam int orderStatus) {
+
+        OrderVo orderVo = new OrderVo();
+        orderVo.setOrderSeq(orderSeq);
+        orderVo.setOrderStatus(orderStatus);
+
+        int orderResult = managerService.cancleOrder(orderVo);
+
+        if (orderResult > 0) {
+            return ResponseEntity.ok().body("주문 취소 성공");
+        }else {
+            return ResponseEntity.ok().body("주문 취소 실패");
+        }
     }
 }

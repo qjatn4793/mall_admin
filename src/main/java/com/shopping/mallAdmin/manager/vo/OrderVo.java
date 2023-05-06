@@ -13,6 +13,7 @@ public class OrderVo {
     private int orderSeq;
     private String orderUserId;
     private String orderRegDate;
+    private String orderUpdateDate;
     private int orderCount;
     private int orderStatus;
     private int productSeq;

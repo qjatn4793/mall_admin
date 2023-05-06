@@ -36,13 +36,15 @@
                                 <thead>
                                 <tr>
                                     <th class="serial">#</th>
-                                    <th class="avatar">Img</th>
-                                    <th>Name</th>
-                                    <th>Birth</th>
-                                    <th>RegDate</th>
-                                    <th>LoginDate</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
+                                    <th class="avatar">프로필이미지</th>
+                                    <th>이름</th>
+                                    <th>총사용금액</th>
+                                    <th>생년월일</th>
+                                    <th>가입일</th>
+                                    <th>로그인시간</th>
+                                    <th>휴대폰번호</th>
+                                    <th>광고동의</th>
+                                    <th>상태</th>
                                     <!--<th>ID</th>-->
                                     <!--<th>Product</th>-->
                                 </tr>
@@ -57,10 +59,12 @@
                                         </div>
                                     </td>
                                     <td th:text="${user.userName}"></td>
+                                    <td th:text="${user.totalPrice}"></td>
                                     <td th:text="${user.userBirth}"></td>
                                     <td th:text="${user.regDate}"></td>
                                     <td th:text="${user.loginDate}"></td>
                                     <td th:text="${user.userPhone}"></td>
+                                    <td th:text="${user.adYn}"></td>
                                     <td>
                                         <span class="badge badge-complete" style="cursor: pointer;" th:if="${user.status == 1}" th:onclick="updateStatus([[${user.userSeq}]], [[${user.status}]])">사용</span>
                                         <span class="badge badge-pending" style="cursor: pointer;" th:if="${user.status != 1}" th:onclick="updateStatus([[${user.userSeq}]], [[${user.status}]])">중지</span>
@@ -74,7 +78,7 @@
                                     <li th:if="${pageInfo.pageNum > 1}">
                                         <a th:href="@{/manager/user_manager(pageNum=${pageInfo.pageNum - 1})}" th:text="'&laquo;'"></a>
                                     </li>
-                                    <li th:each="page : ${#numbers.sequence(1, pageInfo.totalPages)}" th:class="${page == pageInfo.pageNum} ? active">
+                                    <li th:each="page : ${#numbers.sequence(1, pageInfo.totalPages)}" th:class="${page == pageInfo.pageNum} ? active" th:if="${page != 0}">
                                         <a th:href="@{/manager/user_manager(pageNum=${page})}" th:text="${page}"></a>
                                     </li>
                                     <li th:if="${pageInfo.pageNum < pageInfo.totalPages}">

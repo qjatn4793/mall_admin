@@ -34,12 +34,14 @@
         <result property="regDate" column="reg_date"/>
         <result property="loginDate" column="login_date"/>
         <result property="status" column="status"/>
+        <result property="adYn" column="ad_yn"/>
     </resultMap>
 
     <resultMap id="orderResultMap" type="com.shopping.mallAdmin.manager.vo.OrderVo">
         <id property="orderSeq" column="order_seq"/>
         <result property="orderUserId" column="order_user_id"/>
         <result property="orderRegDate" column="order_regDate"/>
+        <result property="orderUpdateDate" column="order_updateDate"/>
         <result property="orderStatus" column="order_status"/>
         <result property="orderCount" column="order_count"/>
         <result property="productSeq" column="product_seq"/>
@@ -91,7 +93,7 @@
     </select>
 
     <insert id="createProduct" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      INSERT INTO product_contents (product_title, product_status, product_price, product_price, product_explain, category_seq, product_regDate)
+      INSERT INTO product_contents (product_title, product_status, product_price, product_count, product_explain, category_seq, product_regDate)
       VALUES (#{productTitle}, #{productStatus}, #{productPrice}, #{productCount}, #{productExplain}, #{categorySeq}, NOW())
     </insert>
 
@@ -104,7 +106,7 @@
     </insert>
 
     <update id="updateCategory" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      UPDATE product_contents SET category_seq=#{categorySeq}, product_title=#{productTitle}, product_price=#{productPrice}, product_count=#{productCount}, product_explain=#{productExplain}, product_status=#{productStatus} WHERE product_seq=#{productSeq};
+      UPDATE product_contents SET category_seq=#{categorySeq}, product_title=#{productTitle}, product_price=#{productPrice}, product_count=#{productCount}, product_explain=#{productExplain}, product_status=#{productStatus} WHERE product_seq=#{productSeq}
     </update>
 
     <delete id="deleteCategory" parameterType="int">
@@ -112,26 +114,38 @@
     </delete>
 
     <update id="updateThumbImg" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      UPDATE product_contents SET thumb_contents = #{thumbContents}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+      UPDATE product_contents SET thumb_contents = #{thumbContents}, product_regDate = NOW() WHERE product_seq=#{productSeq}
     </update>
 
     <update id="updateProductImg" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      UPDATE product_contents SET product_contents = #{productContents}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+      UPDATE product_contents SET product_contents = #{productContents}, product_regDate = NOW() WHERE product_seq=#{productSeq}
     </update>
 
     <update id="updateProductStatus" parameterType="com.shopping.mallAdmin.manager.vo.ManagerVo">
-      UPDATE product_contents SET product_status = #{productStatus}, product_regDate = NOW() WHERE product_seq=#{productSeq};
+      UPDATE product_contents SET product_status = #{productStatus}, product_regDate = NOW() WHERE product_seq=#{productSeq}
     </update>
 
     <update id="updateUserStatus" parameterType="com.shopping.mallAdmin.manager.vo.UserVo">
-      UPDATE user SET status = #{status}, reg_date = NOW() WHERE user_seq=#{userSeq};
+      UPDATE user SET status = #{status}, reg_date = NOW() WHERE user_seq=#{userSeq}
     </update>
 
     <update id="updateOrderStatus" parameterType="com.shopping.mallAdmin.manager.vo.OrderVo">
-      UPDATE product_order SET order_status = #{orderStatus}, order_regDate = NOW() WHERE order_seq=#{orderSeq};
+      UPDATE product_order SET order_status = #{orderStatus}, order_updateDate = NOW() WHERE order_seq=#{orderSeq}
     </update>
 
     <select id="getSelectVo" parameterType="int" resultType="com.shopping.mallAdmin.manager.vo.OrderVo">
       SELECT category_seq, product_price, product_title FROM product_contents WHERE product_seq=#{productSeq}
     </select>
+
+    <select id="selectOrderVo" parameterType="int" resultType="com.shopping.mallAdmin.manager.vo.OrderVo">
+      SELECT * FROM product_order WHERE order_seq=#{orderSeq}
+    </select>
+
+    <update id="cancleOrder" parameterType="com.shopping.mallAdmin.manager.vo.OrderVo">
+      UPDATE user SET total_price = total_price - #{productPrice} WHERE user_id = #{orderUserId}
+    </update>
+
+    <update id="updateProductCount" parameterType="com.shopping.mallAdmin.manager.vo.OrderVo">
+      UPDATE product_contents SET product_count = product_count + #{orderCount} WHERE product_seq=#{productSeq}
+    </update>
 </mapper>
