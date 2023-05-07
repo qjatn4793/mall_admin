@@ -29,7 +29,7 @@
                             <strong class="card-title">상품 썸네일 관리</strong>
                             <!--<a href="#" style="float: right;" class="btn btn-secondary btn-sm change-image-button">이미지 변경</a>-->
                             <form id="thumbUpload" method="post" action="/manager/thumbUploadImg" enctype="multipart/form-data" class="mt-3">
-                                <input type="file" name="file"><br/><br/>
+                                <input type="file" id="thumbFile" name="file"><br/><br/>
                                 <button type="submit" style="width:100%" class="btn btn-secondary btn-sm change-image-button">이미지 변경</button>
                             </form>
                         </div>
@@ -110,7 +110,7 @@
                         <div class="card-header">
                             <strong class="card-title">상품 상세 관리</strong>
                             <form id="productUpload" method="post" action="/manager/productUploadImg" enctype="multipart/form-data" class="mt-3">
-                                <input type="file" name="file"><br/><br/>
+                                <input type="file" id="productFile" name="file"><br/><br/>
                                 <button type="submit" style="width:100%" class="btn btn-secondary btn-sm change-image-button">이미지 변경</button>
                             </form>
                         </div>
@@ -263,7 +263,8 @@
         e.preventDefault(); // 기본 동작 방지
 
         let formData = new FormData(jQuery(this)[0]);
-        let fileInput = jQuery('input[type="file"]')[0];
+        //let fileInput = jQuery('input[type="file"]')[0];
+        let fileInput = jQuery('#thumbFile')[0];
         let params = new URLSearchParams(window.location.search);
         let productSeq = params.get('productSeq');
         let actionUrl = jQuery(this).attr('action') + '?productSeq=' + productSeq;
@@ -293,7 +294,8 @@
         e.preventDefault(); // 기본 동작 방지
 
         let formData = new FormData(jQuery(this)[0]);
-        let fileInput = jQuery('input[type="file"]')[0];
+        //let fileInput = jQuery('input[type="file"]')[0];
+        let fileInput = jQuery('#productFile')[0];
         let params = new URLSearchParams(window.location.search);
         let productSeq = params.get('productSeq');
         let actionUrl = jQuery(this).attr('action') + '?productSeq=' + productSeq;
