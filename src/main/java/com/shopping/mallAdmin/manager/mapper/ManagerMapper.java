@@ -19,6 +19,8 @@ public interface ManagerMapper {
 
     List<OrderVo> getOrderList(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
+    List<OrderVo> getOrderCount(@Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
+
     List<ManagerVo> getCategoryList();
 
     int getTotalCount();

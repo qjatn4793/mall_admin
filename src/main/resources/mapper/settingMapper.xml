@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.mallAdmin.setting.mapper.SettingMapper">
+    <select id="getSettingList" resultType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        SELECT SYSTEM_SEQ,SYSTEM_NAME,SYSTEM_HOST,SYSTEM_USER,SYSTEM_PORT,SYSTEM_OS,SYSTEM_SERVICE1,SYSTEM_SERVICE2,SYSTEM_SERVICE3 FROM mall_system
+    </select>
+
+    <select id="getServiceList" resultType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        SELECT SYSTEM_SEQ,SYSTEM_NAME,SYSTEM_SERVICE1,SYSTEM_SERVICE2,SYSTEM_SERVICE3 FROM mall_system
+    </select>
+
+    <insert id="insertSystem" parameterType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        INSERT INTO mall_system (system_name, system_host, system_user, system_password, system_port, system_os, system_service1, system_service2, system_service3)
+        VALUES (#{systemName}, #{systemHost}, #{systemUser}, #{systemPassword}, #{systemPort}, #{systemOs}, #{systemService1}, #{systemService2}, #{systemService3});
+    </insert>
+
+    <insert id="updateSystem" parameterType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        UPDATE mall_system
+        <set>
+            <if test="systemName != null">system_name=#{systemName},</if>
+            <if test="systemHost != null">system_host=#{systemHost},</if>
+            <if test="systemUser != null">system_user=#{systemUser},</if>
+            <if test="systemPassword != null">system_password=#{systemPassword},</if>
+            <if test="systemPort != null">system_port=#{systemPort},</if>
+            <if test="systemOs != null">system_os=#{systemOs},</if>
+            <if test="systemService1 != null">system_service1=#{systemService1},</if>
+            <if test="systemService2 != null">system_service2=#{systemService2},</if>
+            <if test="systemService3 != null">system_service3=#{systemService3},</if>
+        </set>
+        WHERE system_seq=#{systemSeq}
+    </insert>
+
+    <delete id="deleteSystem" parameterType="string">
+        DELETE FROM mall_system WHERE system_seq=${systemSeq};
+    </delete>
+
+    <select id="getSeq" resultType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        SELECT system_seq FROM mall_system
+    </select>
+
+    <select id="getSetting" parameterType="string" resultType="com.shopping.mallAdmin.setting.vo.SettingVo">
+        SELECT * FROM mall_system
+        WHERE system_seq = #{systemSeq}
+    </select>
+</mapper>

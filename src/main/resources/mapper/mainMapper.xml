@@ -26,4 +26,24 @@
         DELETE FROM user WHERE user_seq=#{userSeq}
     </delete>
 
+    <select id="getRevenue" parameterType="int" resultType="int">
+        SELECT IFNULL(SUM(product_order.order_count * product_contents.product_price), 0) AS revenue
+        FROM
+        product_order
+        INNER JOIN
+        product_contents ON product_order.product_seq = product_contents.product_seq
+        AND product_order.order_status = 1
+    </select>
+
+    <select id="getSales" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM product_contents
+    </select>
+
+    <select id="getProduct" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM product_contents
+    </select>
+
+    <select id="getUsers" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM user
+    </select>
 </mapper>

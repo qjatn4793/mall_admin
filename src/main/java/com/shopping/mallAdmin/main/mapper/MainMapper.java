@@ -10,4 +10,12 @@ public interface MainMapper {
 
     MainVo selectAdminById(String adminId);
 
+    int getRevenue();
+
+    int getSales();
+
+    int getProduct();
+
+    int getUsers();
+
 }

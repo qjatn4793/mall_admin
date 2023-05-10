@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/common/css/bootstrap.min.css">
         <!--<link rel="stylesheet" href="/common/css/font-awesome.min.css">-->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/common/css/flag-icon.min.css">
         <link rel="stylesheet" href="/common/css/style.css">
         <link rel="stylesheet" href="/common/css/chartist.min.css">
@@ -49,19 +50,14 @@
                 /*현재 url 에 따른 active 클래스 추가*/
                 var currentPath = window.location.pathname;
                 var pathSplit = currentPath.split('/');
-                var prefix = pathSplit.pop();
                 var suffix = pathSplit.pop().split('/')[0];
 
-                if (suffix === 'main') {
+                if (suffix === '') {
                     $('#main').addClass('active');
+                }else if (suffix === 'manager') {
+                    $('#manager').addClass('active');
                 }else if (suffix === 'monitoring') {
                     $('#monitoring').addClass('active');
-                }else if (suffix === 'manager') {
-                    if(prefix === 'user_manager.do' || prefix === 'admin_manager.do') {
-                        $('#user_manager').addClass('active');
-                    }else if (prefix === 'solution_manager.do' || prefix === 'license_manager.do') {
-                        $('#solution_manager').addClass('active');
-                    }
                 }else if (suffix === 'setting') {
                     $('#setting').addClass('active');
                 }

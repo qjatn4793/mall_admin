@@ -19,7 +19,8 @@
         let rxInfo;
 
         //let systemSeq = data[i];
-        let webSocketURL = "ws://localhost:8080/webSocket/" + systemSeq;
+        let serverUrl = "59.12.242.207:8888";
+        let webSocketURL = "ws://" + serverUrl + "/webSocket/" + systemSeq;
         let webSocket = new WebSocket(webSocketURL);
 
         webSocket.onopen = function (event) {

@@ -18,10 +18,23 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainViewController {
 
+    @Autowired
+    MainService mainService;
+
     @GetMapping("/")
-    public String admin(HttpServletRequest request) {
+    public String admin(HttpServletRequest request, Model model) {
         Boolean adminLoginCheck = (Boolean) request.getSession().getAttribute("adminLoginCheck");
         if (adminLoginCheck != null && adminLoginCheck) {
+
+            int revenue = mainService.getRevenue();
+            int sales = mainService.getSales();
+            int product = mainService.getProduct();
+            int users = mainService.getUsers();
+
+            model.addAttribute("revenue", revenue);
+            model.addAttribute("sales", sales);
+            model.addAttribute("products", product);
+            model.addAttribute("users", users);
 
             return "main/main.html";
         } else {

@@ -15,6 +15,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/manager/*")
+                .addPathPatterns("/setting/*")
+                .addPathPatterns("/monitoring/*")
                 .excludePathPatterns("/");
 
     }

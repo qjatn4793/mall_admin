@@ -1,0 +1,367 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:util="urn:util">
+<head>
+    <th:block th:replace="common/head :: headFragment"></th:block>
+    <!--신규추가-->
+    <link rel="stylesheet" href="/common/css/dataTables.bootstrap.min.css">
+    <!--신규추가-->
+</head>
+<body>
+<!-- Left Panel -->
+<th:block th:replace="common/nav :: navFragment"></th:block>
+<!-- /#left-panel -->
+
+<!-- Right Panel -->
+
+<div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <th:block th:replace="common/header :: headerFragment"></th:block>
+    <!-- /#header -->
+
+    <!-- Breadcrumbs-->
+    <th:block th:replace="common/breadcrubs :: breadFragment"></th:block>
+    <!-- /.breadcrumbs-->
+
+    <div class="content">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" style="float: right;" class="btn btn-primary mb-1" data-toggle="modal" data-target="#insertmodal">
+                                서버 추가
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div th:each="item : ${settingList}" class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header"><strong th:text="${item.systemName}"></strong><small> 설정내역</small></div>
+                        <div class="card-body card-block" th:id="${'input-' + item.systemSeq}">
+                            <input name="systemName" th:value="${item.systemName}" style="display: none;">
+                            <input name="systemSeq" th:value="${item.systemSeq}" style="display: none;">
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서버 호스트'}"></label><input name="systemHost" th:value="${item.systemHost}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서버 사용자'}"></label><input name="systemUser" th:value="${item.systemUser}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서버 포트'}"></label><input name="systemPort" th:value="${item.systemPort}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서버 OS'}"></label><input name="systemOs" th:value="${item.systemOs}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서비스1'}"></label><input name="systemService1" th:value="${item.systemService1}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서비스2'}"></label><input name="systemService2" th:value="${item.systemService2}" type="text" class="form-control" readonly></div>
+                            <div class="form-group"><label class=" form-control-label" th:text="${item.systemName + ' 서비스3'}"></label><input name="systemService3" th:value="${item.systemService3}" type="text" class="form-control" readonly></div>
+                        </div>
+                        <div class="card-footer">
+                            <div th:id="${'delete-' + item.systemSeq}" class="btn btn-danger btn-sm" style="float: right;">
+                                <i class="fa fa-ban"></i> 삭제
+                            </div>
+                            <div th:id="${'update-' + item.systemSeq}" style="float: right;" class="btn btn-success btn-sm btn-update" data-toggle="modal" data-target="#updatemodal">
+                                <i class="fa fa-ban"></i> 수정
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--생성 모달-->
+            <div class="modal fade" id="insertmodal" tabindex="-1" role="dialog" aria-labelledby="scrollInsertModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollInsertModalLabel">서버 추가</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body card-block">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="name-input" class=" form-control-label">SERVER NAME</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="name-input" name="name-input" placeholder="SERVER NAME" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="host-input" class=" form-control-label">HOST (IP)</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="host-input" name="host-input" placeholder="HOST (IP)" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="user-input" class=" form-control-label">USER ID</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="user-input" name="user-input" placeholder="ID" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="password-input" class=" form-control-label">PASSWORD</label></div>
+                                            <div class="col-12 col-md-9"><input type="password" id="password-input" name="password-input" placeholder="서버접근 PASSWORD를 입력해주세요" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="port-input" class=" form-control-label">PORT</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="port-input" name="port-input" placeholder="PORT" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="os-select" class=" form-control-label">OS 선택</label></div>
+                                            <div class="col-12 col-md-9">
+                                                <select id="os-select" name="os-select" class="form-control">
+                                                    <option value="0">서버 OS를 선택해 주세요</option>
+                                                    <option value="LINUX">LINUX</option>
+                                                    <option value="WINDOW">WINDOW</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service1-input" class=" form-control-label">서비스1</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service1-input" name="service1-input" placeholder="SERVICE1" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service2-input" class=" form-control-label">서비스2</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service2-input" name="service2-input" placeholder="SERVICE2" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service3-input" class=" form-control-label">서비스3</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service3-input" name="service3-input" placeholder="SERVICE3" class="form-control"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                            <button type="button" id="insert-system" class="btn btn-primary">저장</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--생성 모달-->
+            <!--수정 모달-->
+            <div class="modal fade" id="updatemodal" tabindex="-1" role="dialog" aria-labelledby="scrollUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollUpdateModalLabel">서버 수정</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body card-block">
+                                        <input id="seq-update" name="seq-update" style="display: none;">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="name-update" class=" form-control-label">SERVER NAME</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="name-update" name="name-update" placeholder="SERVER NAME" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="host-update" class=" form-control-label">HOST (IP)</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="host-update" name="host-update" placeholder="HOST (IP)" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="user-update" class=" form-control-label">USER ID</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="user-update" name="user-update" placeholder="ID" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="password-update" class=" form-control-label">PASSWORD</label></div>
+                                            <div class="col-12 col-md-9"><input type="password" id="password-update" name="password-update" placeholder="서버접근 PASSWORD를 다시 입력해주세요" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="port-update" class=" form-control-label">PORT</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="port-update" name="port-update" placeholder="PORT" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="os-update" class=" form-control-label">OS 선택</label></div>
+                                            <div class="col-12 col-md-9">
+                                                <select id="os-update" name="os-update" class="form-control">
+                                                    <option value="0">서버 OS를 선택해 주세요</option>
+                                                    <option value="LINUX">LINUX</option>
+                                                    <option value="WINDOW">WINDOW</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service1-update" class=" form-control-label">서비스1</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service1-update" name="service1-update" placeholder="SERVICE1" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service2-update" class=" form-control-label">서비스2</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service2-update" name="service2-update" placeholder="SERVICE2" class="form-control"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label for="service3-update" class=" form-control-label">서비스3</label></div>
+                                            <div class="col-12 col-md-9"><input type="text" id="service3-update" name="service3-update" placeholder="SERVICE3" class="form-control"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                            <button type="button" id="update-system" class="btn btn-primary">수정</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--수정 모달-->
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+    <div class="clearfix"></div>
+    <!-- Footer -->
+    <th:block th:replace="common/footer :: footerFragment"></th:block>
+    <!--/.site-footer -->
+
+</div><!-- /#right-panel -->
+
+<script>
+    jQuery(document).ready(function() {
+
+        jQuery(document).on("click", "div[id^='delete-']", function () {
+            var systemSeq = jQuery(this).attr('id').split('-')[1];
+            if (confirm("삭제 하시겠습니까?")){
+                jQuery.ajax({
+                    type: 'DELETE',
+                    url: '/setting/system_setting',
+                    data: JSON.stringify({"systemSeq" : systemSeq}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data === 1) {
+                            alert("삭제 성공");
+                            location.reload();
+                        }else {
+                            alert("삭제 실패");
+                            location.reload();
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert("정상적으로 삭제되지 않았습니다.");
+                    }
+                });
+            }
+        });
+
+        /*jQuery('#updatemodal').click(function(event) {
+            console.log(this);
+
+            var systemSeq = jQuery(this).attr('id').split('-')[1];
+
+            console.log(systemSeq);
+        });*/
+
+        jQuery('.btn-update').click(function() {
+            // 클릭한 버튼의 시스템 시퀀스 값을 추출
+            let systemSeq = jQuery(this).attr('id').replace('update-', '');
+
+            // 시스템 정보가 있는 모달의 ID 값을 만듦
+            let modalId = '#input-' + systemSeq;
+
+            console.log(modalId);
+
+            // 해당 모달의 child 엘리먼트 중 input 엘리먼트들의 값을 가져옴
+            let systemName = jQuery(modalId + ' input[name="systemName"]').val();
+            let systemHost = jQuery(modalId + ' input[name="systemHost"]').val();
+            let systemUser = jQuery(modalId + ' input[name="systemUser"]').val();
+            let systemPort = jQuery(modalId + ' input[name="systemPort"]').val();
+            let systemOs = jQuery(modalId + ' input[name="systemOs"]').val();
+            let systemService1 = jQuery(modalId + ' input[name="systemService1"]').val();
+            let systemService2 = jQuery(modalId + ' input[name="systemService2"]').val();
+            let systemService3 = jQuery(modalId + ' input[name="systemService3"]').val();
+
+            jQuery("#seq-update").val(systemSeq);
+            jQuery("#name-update").val(systemName);
+            jQuery("#host-update").val(systemHost);
+            jQuery("#user-update").val(systemUser);
+            jQuery("#port-update").val(systemPort);
+            jQuery("#os-update").val(systemOs);
+            jQuery("#service1-update").val(systemService1);
+            jQuery("#service2-update").val(systemService2);
+            jQuery("#service3-update").val(systemService3);
+        });
+
+        jQuery('#update-system').click(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                systemSeq: jQuery('#seq-update').val(),
+                systemName: jQuery('#name-update').val(),
+                systemHost: jQuery('#host-update').val(),
+                systemUser: jQuery('#user-update').val(),
+                systemPassword: jQuery('#password-update').val(),
+                systemPort: jQuery('#port-update').val(),
+                systemOs: jQuery('#os-update').val(),
+                systemService1: jQuery("#service1-update").val(),
+                systemService2: jQuery("#service2-update").val(),
+                systemService3: jQuery("#service3-update").val()
+            };
+
+            if (formData.systemName && formData.systemHost && formData.systemUser && formData.systemPassword && formData.systemPort && formData.systemOs) {
+                if (confirm("수정 하시겠습니까?\n수정된 정보가 서버 접속 정보와 일치하지 않을경우 정상적인 서비스가 어려울 수 있습니다.")) {
+                    jQuery.ajax({
+                        type: 'PUT',
+                        url: '/setting/system_setting',
+                        data: JSON.stringify(formData),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data === 1) {
+                                alert("수정 성공");
+                                location.reload();
+                            } else {
+                                alert("수정 실패 : 서버에 접속할 수 없습니다.");
+                                location.reload();
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("정상적으로 수정되지 않았습니다.");
+                        }
+                    });
+                }
+            }else {
+                alert("필수 입력값이 비어있습니다. 수정하실 내용을 전부 입력해주세요!");
+            }
+        });
+
+        jQuery('#insert-system').click(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                systemName: jQuery('#name-input').val(),
+                systemHost: jQuery('#host-input').val(),
+                systemUser: jQuery('#user-input').val(),
+                systemPassword: jQuery('#password-input').val(),
+                systemPort: jQuery('#port-input').val(),
+                systemOs: jQuery('#os-select').val(),
+                systemService1: jQuery("#service1-input").val(),
+                systemService2: jQuery("#service2-input").val(),
+                systemService3: jQuery("#service3-input").val()
+            };
+
+            if (formData.systemName && formData.systemHost && formData.systemUser && formData.systemPassword && formData.systemPort && formData.systemOs) {
+                if (confirm("생성 하시겠습니까?\n생성된 정보가 서버 접속 정보와 일치하지 않을경우 정상적인 서비스가 어려울 수 있습니다.")) {
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '/setting/system_setting',
+                        data: JSON.stringify(formData),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data === 1) {
+                                alert("생성 성공");
+                                location.reload();
+                            } else {
+                                alert("생성 실패 : 서버에 접속할 수 없습니다.");
+                                location.reload();
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("정상적으로 생성되지 않았습니다.");
+                        }
+                    });
+                }
+            }else {
+                alert("필수 입력값이 비어있습니다. 생성하실 내용을 전부 입력해주세요!");
+            }
+        });
+    });
+</script>
+</body>
+</html>

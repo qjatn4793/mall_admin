@@ -21,7 +21,7 @@ public class MainController {
 
     /*로그인 프로세스*/
     @PostMapping("/admin")
-    public String loginProc(@RequestBody MainVo mainVo, @RequestParam(required = false) boolean rememberMe, Model model, HttpServletRequest request) {
+    public String loginProc(@RequestBody MainVo mainVo, @RequestParam(required = false) boolean rememberMe, HttpServletRequest request) {
 
         String encryptedPassword = PasswordUtil.sha256(mainVo.getAdminPw()); // 패스워드 암호화
 

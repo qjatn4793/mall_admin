@@ -1,0 +1,362 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/head :: headFragment"></th:block>
+</head>
+
+<body>
+    <!-- Left Panel -->
+    <th:block th:replace="common/nav :: navFragment"></th:block>
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+        <!-- Header-->
+        <th:block th:replace="common/header :: headerFragment"></th:block>
+        <!-- /#header -->
+        <!-- Breadcrumbs-->
+        <th:block th:replace="common/breadcrubs :: breadFragment"></th:block>
+        <!-- /.breadcrumbs-->
+        <!-- Content -->
+        <div class="content">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <!--<strong style="line-height: 38px;" class="card-title" th:text="${'시스템 정보 : ' + settingVo.systemName} + '/'"></strong>
+                                <strong style="line-height: 38px;" class="card-title" th:text="${'시스템 IP : ' + settingVo.systemHost} + '/'"></strong>
+                                <strong style="line-height: 38px;" class="card-title" th:text="${'시스템 OS : ' + settingVo.systemOs}"></strong>-->
+                                <button class="btn btn-primary" style="float: right; margin-left: 10px;" onclick="location.href='/monitoring/serverMonitor'">목록 보기</button>
+                                <!--<button class="btn btn-primary" style="float: right;" onclick="changeColumnSize()">상세 보기</button><br>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>CPU 사용량 통계</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container" style="height:130px; padding:0px;">
+                                    <div id="flot-pie" class="flot-pie-container" style="height:130px; padding:0px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title" th:text="${settingVo.systemName + ' CPU 사용률(%)'}"></strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container" style="height:130px; padding:0px;">
+                                    <div th:id="${'cpuLoading-' + settingVo.systemSeq}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Loading...</div>
+                                    <div th:id="${'cpu-load-' + settingVo.systemSeq}" class="cpu-load" style="height:150px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">시스템 정보</strong>
+                            </div>
+                            <div class="card-body" style="padding: 0px;">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" style="width:30%">구분</th>
+                                        <th scope="col" th:text="내용"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">서버 명</th>
+                                        <td th:text="${settingVo.systemName}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">서버 IP</th>
+                                        <td th:text="${settingVo.systemHost}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">서버 PORT</th>
+                                        <td th:text="${settingVo.systemPort}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>MEMORY 사용량 통계</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container" style="height:130px; padding:0px;">
+                                    <div id="flot-pie2" class="flot-pie-container" style="height:130px; padding:0px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title" th:text="${settingVo.systemName + ' Memory 사용률(%)'}"></strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container" style="height:130px; padding:0px;">
+                                    <div th:id="${'memLoading-' + settingVo.systemSeq}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Loading...</div>
+                                    <div th:id="${'mem-load-' + settingVo.systemSeq}" class="mem-load" style="height:150px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">서비스 정보</strong>
+                            </div>
+                            <div class="card-body" style="padding: 0px;">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" style="width:30%">구분</th>
+                                        <th scope="col" th:text="내용"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">서비스 1</th>
+                                            <td th:if="${settingVo.systemService1 == null or settingVo.systemService1 == ''}">
+                                                등록된 서비스가 없습니다.
+                                            </td>
+                                            <td th:text="${settingVo.systemService1}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">서비스 2</th>
+                                            <td th:if="${settingVo.systemService2 == null or settingVo.systemService2 == ''}">
+                                                    등록된 서비스가 없습니다.
+                                            </td>
+                                            <td th:text="${settingVo.systemService2}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">서비스 3</th>
+                                            <td th:if="${settingVo.systemService3 == null or settingVo.systemService3 == ''}">
+                                                등록된 서비스가 없습니다.
+                                            </td>
+                                            <td th:text="${settingVo.systemService3}">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title" th:text="${settingVo.systemName + ' Network 사용률(Kbps)'}"></strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container">
+                                    <div th:id="${'netLoading-' + settingVo.systemSeq}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Loading...</div>
+                                    <div th:id="${'net-load-' + settingVo.systemSeq}" class="detail-net-load"></div>
+                                </div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title" th:text="${settingVo.systemName + ' DISK 사용률(%)'}"></strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="flot-container" style="padding:0px;">
+                                    <div th:id="${'diskLoading-' + settingVo.systemSeq}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Loading...</div>
+                                    <canvas th:id="${'barChart-' + settingVo.systemSeq}"></canvas>
+                                </div>
+                            </div>
+                        </div><!-- /# card -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">로그 파일</strong>
+                            </div>
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20%">상태</th>
+                                        <th style="width: 30%">서비스명</th>
+                                        <th style="width: 30%">로그파일</th>
+                                        <th>키워드</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span class="badge badge-complete">Complete</span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${settingVo.systemService1 == null or settingVo.systemService1 == ''}">
+                                                    등록된 서비스가 없습니다.
+                                                </span>
+                                                <span class="name" th:text="${settingVo.systemService1}"></span>
+                                            </td>
+                                            <td>error.log</td>
+                                            <td> <span class="product">Error</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="badge badge-complete">Complete</span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${settingVo.systemService2 == null or settingVo.systemService2 == ''}">
+                                                    등록된 서비스가 없습니다.
+                                                </span>
+                                                <span class="name" th:text="${settingVo.systemService2}"></span>
+                                            </td>
+                                            <td>catalina.log</td>
+                                            <td> <span class="product">NullPointException</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="badge badge-complete">Complete</span>
+                                                <!--<span class="badge badge-pending">Pending</span>-->
+                                            </td>
+                                            <td>
+                                                <span th:if="${settingVo.systemService3 == null or settingVo.systemService3 == ''}">
+                                                    등록된 서비스가 없습니다.
+                                                </span>
+                                                <span class="name" th:text="${settingVo.systemService3}"></span>
+                                            </td>
+                                            <td>access.log</td>
+                                            <td> <span class="product">script</span> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">URL 모니터링</strong>
+                            </div>
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                    <tr>
+                                        <th class="serial">#</th>
+                                        <th class="avatar">Avatar</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="serial">1.</td>
+                                        <td class="avatar">
+                                            <div class="round-img">
+                                                <a href="#"><img class="rounded-circle" src="images/avatar/1.jpg" alt=""></a>
+                                            </div>
+                                        </td>
+                                        <td> #5469 </td>
+                                        <td>  <span class="name">Louis Stanley</span> </td>
+                                        <td> <span class="product">iMax</span> </td>
+                                        <td><span class="count">231</span></td>
+                                        <td>
+                                            <span class="badge badge-complete">Complete</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="serial">2.</td>
+                                        <td class="avatar">
+                                            <div class="round-img">
+                                                <a href="#"><img class="rounded-circle" src="images/avatar/2.jpg" alt=""></a>
+                                            </div>
+                                        </td>
+                                        <td> #5468 </td>
+                                        <td>  <span class="name">Gregory Dixon</span> </td>
+                                        <td> <span class="product">iPad</span> </td>
+                                        <td><span class="count">250</span></td>
+                                        <td>
+                                            <span class="badge badge-complete">Complete</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="serial">3.</td>
+                                        <td class="avatar">
+                                            <div class="round-img">
+                                                <a href="#"><img class="rounded-circle" src="images/avatar/3.jpg" alt=""></a>
+                                            </div>
+                                        </td>
+                                        <td> #5467 </td>
+                                        <td>  <span class="name">Catherine Dixon</span> </td>
+                                        <td> <span class="product">SSD</span> </td>
+                                        <td><span class="count">250</span></td>
+                                        <td>
+                                            <span class="badge badge-complete">Complete</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div>
+        <!-- /.content -->
+        <div class="clearfix"></div>
+        <!-- Footer -->
+        <th:block th:replace="common/footer :: footerFragment"></th:block>
+        <!--/.site-footer -->
+    </div>
+    <!-- /#right-panel -->
+    <!--  Chart js -->
+    <script src="/common/js/Chart.bundle.min.js"></script>
+
+    <!--Chartist Chart-->
+    <script src="/common/js/chartist.min.js"></script>
+    <script src="/common/js/chartist-plugin-legend.min.js"></script>
+    <script src="/common/js/jquery.flot.min.js"></script>
+    <script src="/common/js/jquery.flot.pie.min.js"></script>
+    <script src="/common/js/jquery.flot.spline.min.js"></script>
+
+    <!--신규 추가-->
+    <script src="/common/js/flot-chart-init-detail.js"></script>
+    <script src="/common/js/jquery.flot.time.min.js"></script>
+    <!--신규 추가-->
+</body>
+<script>
+    /*function changeColumnSize() {
+        var elements = document.querySelectorAll("[id^='sizeUpDown']");
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (element.classList.contains("col-lg-6")) {
+                element.classList.remove("col-lg-6");
+                element.classList.add("col-lg-3");
+            } else if (element.classList.contains("col-lg-3")) {
+                element.classList.remove("col-lg-3");
+                element.classList.add("col-lg-6");
+            }
+        }
+    }*/
+</script>
+</html>

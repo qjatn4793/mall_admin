@@ -1,0 +1,185 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common/head :: headFragment"></th:block>
+</head>
+<style>
+    * {
+        white-space: nowrap;
+    }
+    
+    .loading-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 2s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+<body>
+    <!-- Left Panel -->
+    <th:block th:replace="common/nav :: navFragment"></th:block>
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+        <!-- Header-->
+        <th:block th:replace="common/header :: headerFragment"></th:block>
+        <!-- /#header -->
+        <!-- Breadcrumbs-->
+        <th:block th:replace="common/breadcrubs :: breadFragment"></th:block>
+        <!-- /.breadcrumbs-->
+        <!-- Content -->
+        <div class="content">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div th:each="item : ${serviceList}" class="col-lg-4" style="border-bottom: 10px solid #0e557b; padding-top: 30px;">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div style="text-align: center" class="card-header">
+                                    <strong th:text="${item.systemName} + ' : ' + (${item.systemService1} ?: '미등록 서비스')"></strong>
+                                </div>
+                                <div th:id="${'systemService1-' + item.systemSeq}" class="card-body">
+                                    <div style="width:100%;" th:if="${item.systemStatus1 == 0}" class="btn btn-secondary" onclick="location.href='/setting/system_setting'">미등록 서비스</div>
+                                    <div style="width:100%;" th:if="${item.systemService1 != null and item.systemStatus1 == 2}" class="btn btn-primary" onclick="location.href='/setting/system_setting'">정상</div>
+                                    <div style="width:100%;" th:if="${item.systemService1 != null and item.systemStatus1 == 1}" class="btn btn-danger" onclick="location.href='/setting/system_setting'">비정상</div>
+                                </div>
+                                <div class="card-footer">
+                                    <div style="width:100%;" th:id="${'1-startService-' + item.systemSeq}" th:if="${item.systemService1 != null and item.systemStatus1 == 1}" class="btn btn-success" onclick="ajaxCall(this)">시작</div>
+                                    <div style="width:49%;" th:id="${'1-stopService-' + item.systemSeq}" th:if="${item.systemService1 != null and item.systemStatus1 == 2}" class="btn btn-danger" onclick="ajaxCall(this)">중지</div>
+                                    <div style="width:49%;" th:id="${'1-restartService-' + item.systemSeq}" th:if="${item.systemService1 != null and item.systemStatus1 == 2}" class="btn btn-info" onclick="ajaxCall(this)">재기동</div>
+                                    <div style="width:100%;" th:if="${item.systemService1 == null}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 등록하기</div>
+                                    <div style="width:100%;" th:if="${item.systemService1 != null and item.systemStatus1 == 0}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 수정하기</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div style="text-align: center" class="card-header">
+                                    <strong th:text="${item.systemName} + ' : ' + (${item.systemService2} ?: '미등록 서비스')"></strong>
+                                </div>
+                                <div th:id="${'systemService2-' + item.systemSeq}" class="card-body">
+                                    <div style="width:100%;" th:if="${item.systemStatus2 == 0}" class="btn btn-secondary" onclick="location.href='/setting/system_setting'">미등록 서비스</div>
+                                    <div style="width:100%;" th:if="${item.systemService2 != null and item.systemStatus2 == 2}" class="btn btn-primary" onclick="location.href='/setting/system_setting'">정상</div>
+                                    <div style="width:100%;" th:if="${item.systemService2 != null and item.systemStatus2 == 1}" class="btn btn-danger" onclick="location.href='/setting/system_setting'">비정상</div>
+                                </div>
+                                <div class="card-footer">
+                                    <div style="width:100%;" th:id="${'2-startService-' + item.systemSeq}" th:if="${item.systemService2 != null and item.systemStatus2 == 1}" class="btn btn-success" onclick="ajaxCall(this)">시작</div>
+                                    <div style="width:49%;" th:id="${'2-stopService-' + item.systemSeq}" th:if="${item.systemService2 != null and item.systemStatus2 == 2}" class="btn btn-danger" onclick="ajaxCall(this)">중지</div>
+                                    <div style="width:49%;" th:id="${'2-restartService-' + item.systemSeq}" th:if="${item.systemService2 != null and item.systemStatus2 == 2}" class="btn btn-info" onclick="ajaxCall(this)">재기동</div>
+                                    <div style="width:100%;" th:if="${item.systemService2 == null}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 등록하기</div>
+                                    <div style="width:100%;" th:if="${item.systemService2 != null and item.systemStatus2 == 0}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 수정하기</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div style="text-align: center" class="card-header">
+                                    <strong th:text="${item.systemName} + ' : ' + (${item.systemService3} ?: '미등록 서비스')"></strong>
+                                </div>
+                                <div th:id="${'systemService3-' + item.systemSeq}" class="card-body">
+                                    <div style="width:100%;" th:if="${item.systemStatus3 == 0}" class="btn btn-secondary" onclick="location.href='/setting/system_setting'">미등록 서비스</div>
+                                    <div style="width:100%;" th:if="${item.systemService3 != null and item.systemStatus3 == 2}" class="btn btn-primary" onclick="location.href='/setting/system_setting'">정상</div>
+                                    <div style="width:100%;" th:if="${item.systemService3 != null and item.systemStatus3 == 1}" class="btn btn-danger" onclick="location.href='/setting/system_setting'">비정상</div>
+                                </div>
+                                <div class="card-footer">
+                                    <div style="width:100%;" th:id="${'3-startService-' + item.systemSeq}" th:if="${item.systemService3 != null and item.systemStatus3 == 1}" class="btn btn-success" onclick="ajaxCall(this)">시작</div>
+                                    <div style="width:49%;" th:id="${'3-stopService-' + item.systemSeq}" th:if="${item.systemService3 != null and item.systemStatus3 == 2}" class="btn btn-danger" onclick="ajaxCall(this)">중지</div>
+                                    <div style="width:49%;" th:id="${'3-restartService-' + item.systemSeq}" th:if="${item.systemService3 != null and item.systemStatus3 == 2}" class="btn btn-info" onclick="ajaxCall(this)">재기동</div>
+                                    <div style="width:100%;" th:if="${item.systemService3 == null}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 등록하기</div>
+                                    <div style="width:100%;" th:if="${item.systemService3 != null and item.systemStatus3 == 0}" class="btn btn-success" onclick="location.href='/setting/system_setting';">서비스 수정하기</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div>
+        <div id="loading-mask" class="loading-mask" style="display:none;">
+            <div class="spinner"></div>
+        </div>
+        <!-- /.content -->
+        <div class="clearfix"></div>
+        <!-- Footer -->
+        <th:block th:replace="common/footer :: footerFragment"></th:block>
+        <!--/.site-footer -->
+    </div>
+    <!-- /#right-panel -->
+    <!--  Chart js -->
+    <script src="/common/js/Chart.bundle.min.js"></script>
+    <!--신규 추가 그래프 사용시 필요-->
+    <!--<script src="/common/js/chartjs-init.js"></script>-->
+    <!--신규 추가-->
+
+    <!--Chartist Chart-->
+    <script src="/common/js/jquery.flot.min.js"></script>
+    <script src="/common/js/jquery.flot.spline.min.js"></script>
+    <script>
+        function ajaxCall(data) {
+            var originalString = data.id;
+            var splitString = originalString.split("Service-");
+            var splitString2 = splitString[0].split("-");
+
+            var systemSeq = splitString[1].toString().trim();
+            var systemControl = splitString2[1].toString().trim();
+            var systemNum = splitString2[0].toString().trim();
+            var formData = {
+                systemSeq : systemSeq,
+                systemControl : systemControl,
+                systemNum : systemNum
+            };
+
+            jQuery.ajax({
+                url: '/monitoring/serviceControl',
+                type: 'POST',
+                data: JSON.stringify(formData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {
+                    jQuery("#loading-mask").show(); // 로딩 마스크 표시
+                },
+                success: function(data) {
+                    if (data == 1) {
+                        alert("성공");
+                        jQuery("#loading-mask").show(); // 로딩 마스크 표시
+                        location.reload();
+                        jQuery("#loading-mask").hide(); // 로딩 마스크 숨김
+                    }else {
+                        alert("실패");
+                        jQuery("#loading-mask").show(); // 로딩 마스크 표시
+                        location.reload();
+                        jQuery("#loading-mask").hide(); // 로딩 마스크 숨김
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("오류");
+                    location.reload();
+                },
+                complete: function() {
+                    jQuery("#loading-mask").hide(); // 로딩 마스크 숨김
+                }
+            });
+        }
+    </script>
+</body>
+</html>

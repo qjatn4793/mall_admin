@@ -61,6 +61,12 @@
       LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <select id="getOrderCount" resultMap="orderResultMap">
+      SELECT * FROM product_order
+      WHERE order_status = 1
+      LIMIT #{startIndex}, #{pageSize}
+    </select>
+
     <select id="getUserList" resultMap="userResultMap">
       SELECT * FROM user
       LIMIT #{startIndex}, #{pageSize}

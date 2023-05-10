@@ -48,6 +48,21 @@ public class ManagerService {
         return orderList;
     }
 
+    public List<OrderVo> getOrderCount(int startIndex, int pageSize) {
+
+        List<OrderVo> orderList = managerMapper.getOrderCount(startIndex, pageSize);
+
+        for (OrderVo order : orderList) {
+            OrderVo orderVo = managerMapper.getSelectVo(order.getProductSeq());
+            order.setCategorySeq(orderVo.getCategorySeq());
+            order.setProductPrice(orderVo.getProductPrice());
+            order.setProductTitle(orderVo.getProductTitle());
+            order.setCategoryName(managerMapper.getCategoryName(order.getCategorySeq()));
+        }
+
+        return orderList;
+    }
+
     public List<UserVo> getUserList(int startIndex, int pageSize) {
 
         List<UserVo> productList = managerMapper.getUserList(startIndex, pageSize);

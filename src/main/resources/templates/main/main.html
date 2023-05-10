@@ -33,6 +33,79 @@
         <!-- /#header -->
         <!-- Content -->
         <div class="content">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="cursor: pointer;" onclick="location.href='/manager/product_order'">
+                            <div class="stat-widget-five">
+                                <div class="stat-icon dib flat-color-1">
+                                    <i class="pe-7s-cash"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="text-left dib">
+                                        <div class="stat-text">$<span class="count" th:text="${revenue}"></span></div>
+                                        <div class="stat-heading">Revenue</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="cursor: pointer;" onclick="location.href='/manager/product_manager'">
+                            <div class="stat-widget-five">
+                                <div class="stat-icon dib flat-color-2">
+                                    <i class="pe-7s-cart"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="text-left dib">
+                                        <div class="stat-text"><span class="count" th:text="${sales}"></span></div>
+                                        <div class="stat-heading">Sales</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="cursor: pointer;" onclick="location.href='/manager/product_manager'">
+                            <div class="stat-widget-five">
+                                <div class="stat-icon dib flat-color-3">
+                                    <i class="pe-7s-browser"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="text-left dib">
+                                        <div class="stat-text"><span class="count" th:text="${products}"></span></div>
+                                        <div class="stat-heading">Products</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="cursor: pointer;" onclick="location.href='/manager/user_manager'">
+                            <div class="stat-widget-five">
+                                <div class="stat-icon dib flat-color-4">
+                                    <i class="pe-7s-users"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="text-left dib">
+                                        <div class="stat-text"><span class="count" th:text="${users}"></span></div>
+                                        <div class="stat-heading">Users</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Animated -->
             <div class="animated fadeIn">
                 <!--  Traffic  -->
@@ -90,7 +163,7 @@
             <div class="row">
                 <div class="col-sm-6 col-lg-3">
                     <div class="card text-white bg-flat-color-4">
-                        <a href="/monitoring/detection" style="color: #ffffff;">
+                        <a href="n/monitoring/serverMonitor" style="color: #ffffff;">
                             <div class="card-body">
                                 <div class="card-left pt-1 float-left">
                                     <h3 class="mb-0 fw-r">
@@ -152,7 +225,7 @@
 
                 <div class="col-sm-6 col-lg-3">
                     <div class="card text-white bg-flat-color-8">
-                        <a href="/setting/user_setting" style="color: #ffffff;">
+                        <a href="/manager/user_manager" style="color: #ffffff;">
                             <div class="card-body">
                                 <div class="card-left pt-1 float-left">
                                     <h3 class="mb-0 fw-r">
@@ -236,7 +309,7 @@
 
                 <div class="col-sm-6 col-lg-3">
                     <div class="card text-white bg-flat-color-2">
-                        <a href="/manager/license_manager" style="color: #ffffff;">
+                        <a href="/manager/admin_manager" style="color: #ffffff;">
                             <div class="card-body">
                                 <div class="pt-1 float-left">
                                     <h3 class="mb-0 fw-r">

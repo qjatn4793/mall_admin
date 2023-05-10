@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -213,5 +214,15 @@ public class ManagerController {
         }else {
             return ResponseEntity.ok().body("주문 취소 실패");
         }
+    }
+
+    @GetMapping("/orderCount")
+    public List<OrderVo> orderCount() {
+        int pageSize = 5; // 한 알람에 보여줄 데이터 최대 개수
+        int startIndex = 0;
+
+        List<OrderVo> orderList = managerService.getOrderCount(startIndex, pageSize); // pageNum 에 해당하는 페이지 데이터 가져오기
+
+        return orderList;
     }
 }

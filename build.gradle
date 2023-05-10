@@ -42,6 +42,12 @@ dependencies {
     // lombok을 위해 추가
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+    // 웹소켓통신을 위해 추가
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // 리눅스, 윈도우 모니터링을 위한 jsch 라이브러리 추가
+    implementation 'com.jcraft:jsch:0.1.55'
+
 }
 
 test {

@@ -26,4 +26,20 @@ public class MainService {
         return false; // 로그인 실패
     }
 
+    public int getRevenue() {
+
+        return mainMapper.getRevenue();
+    }
+
+    public int getSales() {
+        return mainMapper.getSales();
+    }
+
+    public int getProduct() {
+        return mainMapper.getProduct();
+    }
+
+    public int getUsers() {
+        return mainMapper.getUsers();
+    }
 }
