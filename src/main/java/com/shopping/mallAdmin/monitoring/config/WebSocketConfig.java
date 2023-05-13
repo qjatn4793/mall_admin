@@ -27,12 +27,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     public void registerHandlers() {
-        /*Map<Integer, Integer> seqMap = settingService.getSeq();
-
-        for (Integer settingSeq : seqMap.values()) {
-            System.out.println(settingSeq);
-            registry.addHandler(webSocketHandler, "/webSocket/" + settingSeq);
-        }*/
-        registry.addHandler(webSocketHandler, "/webSocket/**");
+        registry.addHandler(webSocketHandler, "/webSocket/**")
+        .setAllowedOrigins("http://59.12.242.207:8888", "http://172.30.1.30:81");
     }
 }

@@ -19,7 +19,7 @@
         let rxInfo;
 
         //let systemSeq = data[i];
-        let serverUrl = "59.12.242.207:8888";
+        let serverUrl = window.location.host;
         let webSocketURL = "ws://" + serverUrl + "/webSocket/" + systemSeq;
         let webSocket = new WebSocket(webSocketURL);
 

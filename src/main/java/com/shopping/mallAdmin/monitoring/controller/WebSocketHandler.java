@@ -5,16 +5,21 @@ import com.jcraft.jsch.*;
 import com.shopping.mallAdmin.setting.service.SettingService;
 import com.shopping.mallAdmin.setting.vo.SettingVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.adapter.standard.StandardWebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -28,7 +33,37 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception{
+
+        /*확인용*/
+        System.out.println("연결확인용");
+        String sessionId = session.getId(); // 세션 ID
+        URI uri = session.getUri(); // 연결된 URI
+        HttpHeaders headers = session.getHandshakeHeaders(); // 연결 시 사용된 헤더
+        Map<String, Object> attributes = session.getAttributes(); // 세션의 속성 맵
+        Principal principal = session.getPrincipal(); // 연결된 사용자 주체
+        InetSocketAddress remoteAddress = session.getRemoteAddress(); // 원격 주소
+        InetSocketAddress localAddress = session.getLocalAddress(); // 로컬 주소
+        StandardWebSocketSession standardSession = (StandardWebSocketSession) session; // 특정 구현체에 대한 형변환
+
+        // 세션의 속성 맵에 저장된 정보 확인
+        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println(key + ": " + value);
+        }
+
+        System.out.println("Session ID: " + sessionId);
+        System.out.println("URI: " + uri);
+        System.out.println("Handshake Headers: " + headers);
+        System.out.println("Principal: " + principal);
+        System.out.println("Remote Address: " + remoteAddress);
+        System.out.println("Local Address: " + localAddress);
+        System.out.println("연결확인용");
+        /*확인용*/
+
         // WebSocket 연결이 성공하였을 때 실행되는 코드
+
+        System.out.println("웹소켓 연결시도");
 
         Map<Integer, Integer> seqMap = settingService.getSeq();
 
@@ -255,7 +290,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void handleTransportError(WebSocketSession session, Throwable exception) {
         // WebSocket 연결이 에러가 발생하였을 때 실행되는 코드
         // 예외 처리
-        exception.printStackTrace();
+        //exception.printStackTrace();
+        System.out.println("웹소켓 연결해제");
     }
 
     private static String executeCommand(Session session, String command) {

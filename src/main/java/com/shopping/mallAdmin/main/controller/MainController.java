@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 @AllArgsConstructor
 @ResponseBody
@@ -29,9 +30,31 @@ public class MainController {
 
         request.getSession().setAttribute("adminLoginCheck", loginCheck);
 
+        System.out.println("접속 확인용");
+        System.out.println("Request Method: " + request.getMethod());
+        System.out.println("Request URI: " + request.getRequestURI());
+
+        System.out.println("Request Headers:");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + ": " + request.getHeader(headerName));
+        }
+
+        System.out.println("Request Parameters:");
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String parameterName = parameterNames.nextElement();
+            String parameterValue = request.getParameter(parameterName);
+            System.out.println(parameterName + ": " + parameterValue);
+        }
+        System.out.println("접속 확인용");
+
         if (loginCheck) {
+            System.out.println("관리자 로그인 성공");
             return "1";
         }else {
+            System.out.println("관리자 로그인 실패");
             return "0";
         }
     }

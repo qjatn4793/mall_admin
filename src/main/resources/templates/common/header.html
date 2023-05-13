@@ -2,31 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Header-->
 <th:block th:fragment="headerFragment">
-<style>
-    /* 검색 버튼을 오른쪽 상단에 위치시킴 */
-    #search {
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-
-    /* 닫기 버튼을 오른쪽 상단에 위치시킴 */
-    .search-close {
-        position: absolute;
-        top: 0;
-        right: 40px; /* 검색 버튼과 거리를 둠 */
-    }
-
-    /* 검색어 입력 필드를 예쁘게 스타일링 */
-    .form-control {
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        padding: 8px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        width: 200px;
-    }
-</style>
 <header id="header" class="header">
     <div class="top-left">
         <div class="navbar-header">
@@ -55,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="dropdown for-message">
+                <!--<div class="dropdown for-message">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
                         <span class="count bg-primary">4</span>
@@ -95,7 +70,7 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <div class="user-area dropdown float-right">
@@ -104,11 +79,11 @@
                 </a>
 
                 <div class="user-menu dropdown-menu">
-                    <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
+                    <a class="nav-link" href="/manager/admin_manager"><i class="fa fa- user"></i>My Profile</a>
 
-                    <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
+                    <!--<a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>-->
 
-                    <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
+                    <a class="nav-link" href="/setting/system_setting"><i class="fa fa -cog"></i>Settings</a>
 
                     <a id="logoutClick" class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
                 </div>
@@ -151,7 +126,7 @@
                     jQuery('#notification-count').text(count);
 
                     if (count == 0) {
-                        jQuery('#notification-dropdown .dropdown-menu').html("<p>주문내역이 없습니다.</p>");
+                        jQuery('#notification-dropdown .dropdown-menu').html("<p>주문내역 없음</p>");
                     }
                 },
                 error: function(xhr, status, error) {
