@@ -11,7 +11,7 @@
     </select>
 
     <select id="selectAdminById" parameterType="String" resultType="com.shopping.mallAdmin.main.vo.MainVo">
-        SELECT admin_pw FROM admin_user WHERE admin_id = #{userId}
+        SELECT * FROM admin_user WHERE admin_id = #{userId}
     </select>
 
     <select id="adminSelectOne" parameterType="String" resultType="String">
@@ -46,4 +46,8 @@
     <select id="getUsers" parameterType="int" resultType="int">
         SELECT COUNT(*) FROM user
     </select>
+
+    <update id="updateLoginDate" parameterType="String">
+        UPDATE admin_user SET login_date = NOW() WHERE admin_id = #{adminId}
+    </update>
 </mapper>

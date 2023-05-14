@@ -18,4 +18,6 @@ public interface MainMapper {
 
     int getUsers();
 
+    int updateLoginDate(String adminId);
+
 }

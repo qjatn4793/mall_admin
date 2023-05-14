@@ -1,5 +1,6 @@
 package com.shopping.mallAdmin.configuration.interceptor;
 
+import com.shopping.mallAdmin.main.vo.MainVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,9 +18,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean loginCheck =false;
 
-        Boolean adminLoginCheck = (Boolean) request.getSession().getAttribute("adminLoginCheck");
+        MainVo adminLoginCheck = (MainVo) request.getSession().getAttribute("mainVo");
 
-        if (adminLoginCheck != null && adminLoginCheck) {
+        if (adminLoginCheck != null) {
             loginCheck = true;
         }else {
             request.getSession().invalidate();

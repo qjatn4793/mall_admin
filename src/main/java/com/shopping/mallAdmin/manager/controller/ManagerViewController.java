@@ -1,5 +1,6 @@
 package com.shopping.mallAdmin.manager.controller;
 
+import com.shopping.mallAdmin.main.vo.MainVo;
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
 import com.shopping.mallAdmin.manager.vo.OrderVo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @AllArgsConstructor
@@ -80,7 +82,11 @@ public class ManagerViewController {
     }
 
     @GetMapping("/admin_manager")
-    public String admin() {
+    public String admin(Model model, HttpServletRequest request) {
+
+        MainVo mainVo = (MainVo) request.getSession().getAttribute("mainVo");
+
+        model.addAttribute("mainVo", mainVo);
 
         return "manager/admin_manager.html";
     }

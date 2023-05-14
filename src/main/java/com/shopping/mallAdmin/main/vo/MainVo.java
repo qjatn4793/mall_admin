@@ -12,5 +12,8 @@ import lombok.NoArgsConstructor;
 public class MainVo {
     private String adminId;
     private String adminPw;
+    private String adminPhone;
     private int status;
+    private String regDate;
+    private String loginDate;
 }

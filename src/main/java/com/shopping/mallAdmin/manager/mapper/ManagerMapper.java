@@ -1,5 +1,6 @@
 package com.shopping.mallAdmin.manager.mapper;
 
+import com.shopping.mallAdmin.main.vo.MainVo;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
 import com.shopping.mallAdmin.manager.vo.OrderVo;
 import com.shopping.mallAdmin.manager.vo.UserVo;
@@ -60,5 +61,7 @@ public interface ManagerMapper {
     OrderVo getSelectVo(int productSeq);
 
     OrderVo selectOrderVo(int orderSeq);
+
+    int updateAdminPhone(MainVo mainVo);
 
 }

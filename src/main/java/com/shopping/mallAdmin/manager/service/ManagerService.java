@@ -1,5 +1,6 @@
 package com.shopping.mallAdmin.manager.service;
 
+import com.shopping.mallAdmin.main.vo.MainVo;
 import com.shopping.mallAdmin.manager.mapper.ManagerMapper;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
 import com.shopping.mallAdmin.manager.vo.OrderVo;
@@ -161,5 +162,10 @@ public class ManagerService {
         }else {
             return 0;
         }
+    }
+
+    public int updateAdminPhone(MainVo mainVo) {
+
+        return managerMapper.updateAdminPhone(mainVo);
     }
 }

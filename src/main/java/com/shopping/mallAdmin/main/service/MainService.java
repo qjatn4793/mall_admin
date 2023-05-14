@@ -15,15 +15,15 @@ public class MainService {
     @Autowired
     private MainMapper mainMapper;
 
-    public boolean loginCheck(String adminId, String encryptedPassword) {
+    public MainVo loginCheck(String adminId, String encryptedPassword) {
         MainVo adminVo = mainMapper.selectAdminById(adminId);
         if (adminVo != null) {
             String dbPassword = adminVo.getAdminPw();
             if (encryptedPassword.equals(dbPassword)) {
-                return true; // 로그인 성공
+                return adminVo; // 로그인 성공
             }
         }
-        return false; // 로그인 실패
+        return null; // 로그인 실패
     }
 
     public int getRevenue() {
@@ -41,5 +41,9 @@ public class MainService {
 
     public int getUsers() {
         return mainMapper.getUsers();
+    }
+
+    public int updateLoginDate(String adminId) {
+        return mainMapper.updateLoginDate(adminId);
     }
 }

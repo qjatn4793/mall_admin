@@ -26,9 +26,9 @@ public class MainController {
 
         String encryptedPassword = PasswordUtil.sha256(mainVo.getAdminPw()); // 패스워드 암호화
 
-        boolean loginCheck = adminService.loginCheck(mainVo.getAdminId(), encryptedPassword);
+        MainVo loginCheck = adminService.loginCheck(mainVo.getAdminId(), encryptedPassword);
 
-        request.getSession().setAttribute("adminLoginCheck", loginCheck);
+        request.getSession().setAttribute("mainVo", loginCheck);
 
         System.out.println("접속 확인용");
         System.out.println("Request Method: " + request.getMethod());
@@ -50,9 +50,15 @@ public class MainController {
         }
         System.out.println("접속 확인용");
 
-        if (loginCheck) {
-            System.out.println("관리자 로그인 성공");
-            return "1";
+        if (loginCheck != null) {
+            int result = adminService.updateLoginDate(mainVo.getAdminId());
+            if(result > 0) {
+                System.out.println("관리자 로그인 성공");
+                return "1";
+            }else {
+                System.out.println("관리자 로그인 실패");
+                return "0";
+            }
         }else {
             System.out.println("관리자 로그인 실패");
             return "0";
@@ -67,5 +73,4 @@ public class MainController {
         session.invalidate();
         return "1";
     }
-
 }

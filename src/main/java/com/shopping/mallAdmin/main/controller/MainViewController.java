@@ -2,6 +2,7 @@ package com.shopping.mallAdmin.main.controller;
 
 import com.shopping.mallAdmin.main.service.MainService;
 import com.shopping.mallAdmin.configuration.PasswordUtil;
+import com.shopping.mallAdmin.main.vo.MainVo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +24,8 @@ public class MainViewController {
 
     @GetMapping("/")
     public String admin(HttpServletRequest request, Model model) {
-        Boolean adminLoginCheck = (Boolean) request.getSession().getAttribute("adminLoginCheck");
-        if (adminLoginCheck != null && adminLoginCheck) {
+        MainVo adminLoginCheck = (MainVo) request.getSession().getAttribute("mainVo");
+        if (adminLoginCheck != null) {
 
             int revenue = mainService.getRevenue();
             int sales = mainService.getSales();

@@ -1,5 +1,6 @@
 package com.shopping.mallAdmin.manager.controller;
 
+import com.shopping.mallAdmin.main.vo.MainVo;
 import com.shopping.mallAdmin.manager.service.ManagerService;
 import com.shopping.mallAdmin.manager.vo.ManagerVo;
 import com.shopping.mallAdmin.manager.vo.OrderVo;
@@ -224,5 +225,43 @@ public class ManagerController {
         List<OrderVo> orderList = managerService.getOrderCount(startIndex, pageSize); // pageNum 에 해당하는 페이지 데이터 가져오기
 
         return orderList;
+    }
+
+    @PostMapping("/updateAdminPhone")
+    public String updateAdminPhone(@RequestBody MainVo mainVo, HttpServletRequest request) {
+
+        String adminPhone = mainVo.getAdminPhone();
+
+        // 휴대폰 번호 변환
+        adminPhone = convertPhoneNumberFormat(adminPhone);
+
+        // 휴대폰 번호 규칙 확인
+        if (!isValidPhoneNumber(adminPhone)) {
+            return "올바른 휴대폰 번호를 입력해 주세요";
+        }
+
+        MainVo sessionMainVo = (MainVo)request.getSession().getAttribute("mainVo");
+
+        sessionMainVo.setAdminPhone(mainVo.getAdminPhone());
+
+        int result = managerService.updateAdminPhone(sessionMainVo);
+
+        if (result > 0) {
+            return "휴대폰 번호가 업데이트되었습니다.";
+        } else {
+            return "휴대폰 번호 업데이트 실패";
+        }
+    }
+
+    // 휴대폰 번호 형식 변환 메소드
+    private String convertPhoneNumberFormat(String phoneNumber) {
+        StringBuilder convertedNumber = new StringBuilder(phoneNumber);
+        convertedNumber.insert(3, "-").insert(8, "-");
+        return convertedNumber.toString();
+    }
+
+    // 휴대폰 번호 유효성 검사 메소드
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("\\d{3}-\\d{4}-\\d{4}");
     }
 }

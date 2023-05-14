@@ -154,4 +154,8 @@
     <update id="updateProductCount" parameterType="com.shopping.mallAdmin.manager.vo.OrderVo">
       UPDATE product_contents SET product_count = product_count + #{orderCount} WHERE product_seq=#{productSeq}
     </update>
+
+    <update id="updateAdminPhone" parameterType="String">
+      UPDATE admin_user SET admin_phone = #{adminPhone} WHERE admin_id = #{adminId}
+    </update>
 </mapper>
